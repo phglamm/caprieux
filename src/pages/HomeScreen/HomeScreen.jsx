@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { motion, useScroll, AnimatePresence } from "framer-motion";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   ChevronRight,
   Calendar,
@@ -14,13 +14,8 @@ import {
   Heart,
   Search,
 } from "lucide-react";
-import Header from "../../components/Header/Header";
 const HomeScreen = () => {
-  const [activeSection, setActiveSection] = useState("home");
   const [selectedProduct, setSelectedProduct] = useState(null);
-  const [scrolled, setScrolled] = useState(false);
-
-  const { scrollYProgress } = useScroll();
 
   // Sample Products Data
   const products = [
@@ -107,15 +102,6 @@ const HomeScreen = () => {
     },
   ];
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
   const formatPrice = (price) => {
     return new Intl.NumberFormat("vi-VN", {
       style: "currency",
@@ -160,10 +146,7 @@ const HomeScreen = () => {
   };
 
   return (
-    <div
-      className="min-h-screen bg-gradient-to-br from-[#f5e6d3] to-[#d4b896]"
-      style={{ fontFamily: "'Cormorant Garamond', 'Playfair Display', serif" }}
-    >
+    <div className="min-h-screen bg-gradient-to-br from-[#f5e6d3] to-[#d4b896]">
       {/* Hero Section */}
       <section className="relative w-full bg-gradient-to-br from-[#3d2817] via-[#5d4433] to-[#3d2817] py-24 lg:py-32 text-center text-[#f5e6d3] overflow-hidden">
         <div

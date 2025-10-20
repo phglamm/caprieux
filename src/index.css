@@ -1,1 +1,10 @@
 @import "tailwindcss";
+
+/* Global typography: vintage, polished serif look */
+:root {
+  --brand-serif: "Playfair Display", serif;
+}
+
+body {
+  font-family: var(--brand-serif);
+}

@@ -1,4 +1,6 @@
-const Header = ({ scrolled, activeSection }) => (
+import { motion } from "framer-motion";
+
+const Header = ({ scrolled }) => (
   <motion.header
     initial={{ y: -100 }}
     animate={{ y: 0 }}
@@ -8,7 +10,6 @@ const Header = ({ scrolled, activeSection }) => (
         ? "bg-[#3d2817]/98 shadow-2xl backdrop-blur-sm"
         : "bg-gradient-to-r from-[#3d2817] to-[#5d4433] shadow-lg"
     }`}
-    style={{ fontFamily: "'Cormorant Garamond', 'Playfair Display', serif" }}
   >
     <div className="w-full px-6 lg:px-12 py-6">
       <div className="flex justify-between items-center">

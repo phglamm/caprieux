@@ -1,8 +1,5 @@
 const Footer = () => (
-  <footer
-    className="w-full bg-gradient-to-r from-[#3d2817] to-[#5d4433] text-[#f5e6d3] py-16 px-6 lg:px-12"
-    style={{ fontFamily: "'Cormorant Garamond', 'Playfair Display', serif" }}
-  >
+  <footer className="w-full bg-gradient-to-r from-[#3d2817] to-[#5d4433] text-[#f5e6d3] py-16 px-6 lg:px-12">
     <div className="max-w-7xl mx-auto">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
         <div>
@@ -15,7 +12,7 @@ const Footer = () => (
           </p>
         </div>
         <div>
-          <h4 className="mb-4 text-[#d4af37] text-xl font-bold">Chính Sách</h4>
+          {/* The component uses Tailwind CSS to style the content and make it responsive. */}
           <ul className="space-y-2">
             <li>
               <a href="#" className="hover:text-[#d4af37] transition-colors">
