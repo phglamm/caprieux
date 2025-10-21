@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Star, Calendar, Package, Sparkles } from "lucide-react";
+import { Star, Calendar, Package, Sparkles, Search } from "lucide-react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
@@ -8,17 +8,22 @@ export default function BstScreen() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchLoading, setSearchLoading] = useState(false);
+  const [searchError, setSearchError] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
     let mounted = true;
     setLoading(true);
-
-    const fetchProducts = async () => {
+    const fetchProducts = async (search) => {
       try {
-        const response = await axios.get(
-          "https://caprieux-be.onrender.com/api/products"
-        );
+        const url = search
+          ? `https://caprieux-be.onrender.com/api/products?searchTerm=${encodeURIComponent(
+              search
+            )}`
+          : "https://caprieux-be.onrender.com/api/products";
+        const response = await axios.get(url);
         if (mounted) {
           setProducts(response.data || []);
           setError(null);
@@ -32,12 +37,14 @@ export default function BstScreen() {
       }
     };
 
+    // initial load without search
     fetchProducts();
     return () => {
       mounted = false;
     };
   }, []);
 
+  // fetchProducts is also used by the search form handler below
   const formatPrice = (price) =>
     new Intl.NumberFormat("vi-VN", {
       style: "currency",
@@ -47,6 +54,35 @@ export default function BstScreen() {
   const imgSrc = (link) => {
     if (!link) return "/images/placeholder.png";
     return link;
+  };
+
+  // products will be populated by initial fetch or API search
+  // (removed client-side title filtering to rely on backend search)
+
+  // Debounced API search: call backend when searchQuery changes
+  // Remove debounce: only perform search when the user submits the form (press Enter)
+
+  const handleSearchSubmit = async (e) => {
+    e.preventDefault();
+    // if search is empty, reload initial products
+    setLoading(true);
+    setSearchError(null);
+    setSearchLoading(true);
+    setProducts([]);
+    try {
+      const url = searchQuery
+        ? `https://caprieux-be.onrender.com/api/products?searchTerm=${encodeURIComponent(
+            searchQuery
+          )}`
+        : "https://caprieux-be.onrender.com/api/products";
+      const resp = await axios.get(url);
+      setProducts(resp.data || []);
+    } catch (err) {
+      setSearchError(err.message || "Search failed");
+    } finally {
+      setSearchLoading(false);
+      setLoading(false);
+    }
   };
 
   const containerVariants = {
@@ -124,6 +160,20 @@ export default function BstScreen() {
           >
             Khám phá những trang phục cao cấp, được tuyển chọn kỹ lưỡng
           </motion.p>
+
+          {/* Search Bar */}
+          <motion.div variants={itemVariants} className="max-w-2xl mx-auto">
+            <form onSubmit={handleSearchSubmit} className="relative">
+              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-[#5d4433]" />
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Tìm kiếm sản phẩm... (Nhấn Enter để tìm)"
+                className="w-full pl-12 pr-4 py-4 rounded-full bg-white text-[#3d2817] placeholder-[#5d4433]/60 focus:outline-none focus:ring-2 focus:ring-[#d4af37] shadow-xl text-lg"
+              />
+            </form>
+          </motion.div>
         </motion.div>
       </section>
 
@@ -154,64 +204,98 @@ export default function BstScreen() {
             </motion.div>
           )}
 
+          {/* Search loading / error */}
+          {searchLoading && !loading && (
+            <div className="text-center py-6 text-[#5d4433]">
+              <Package className="w-12 h-12 mx-auto mb-2 text-[#d4af37] animate-pulse" />
+              Đang tìm kiếm "{searchQuery}"...
+            </div>
+          )}
+
+          {searchError && (
+            <div className="text-center py-4 text-sm text-red-600">
+              Lỗi tìm kiếm: {searchError}
+            </div>
+          )}
+
           {!loading && !error && (
-            <motion.div
-              initial="hidden"
-              animate="visible"
-              variants={containerVariants}
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
-            >
-              {products.map((product) => (
+            <>
+              {products.length === 0 ? (
                 <motion.div
-                  key={product._id}
-                  variants={itemVariants}
-                  whileHover={{ scale: 1.03, y: -10 }}
-                  onClick={() => navigate(`/product/${product._id}`)}
-                  className="bg-white rounded-3xl shadow-xl overflow-hidden cursor-pointer group"
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="text-center py-20 col-span-full"
                 >
-                  <div className="h-80 bg-linear-to-br from-[#f5e6d3] to-[#d4b896] flex items-center justify-center overflow-hidden relative">
-                    <img
-                      src={imgSrc(product.imageLink)}
-                      alt={product.title}
-                      className="object-cover w-full h-full group-hover:scale-110 transition-transform duration-500"
-                      onError={(e) => {
-                        e.currentTarget.src = "/images/placeholder.png";
-                      }}
-                    />
-                    <div className="absolute inset-0 bg-[#3d2817]/0 group-hover:bg-[#3d2817]/20 transition-all duration-300"></div>
-                  </div>
-                  <div className="p-6">
-                    <h3 className="text-2xl font-bold text-[#3d2817] mb-3 group-hover:text-[#d4af37] transition-colors">
-                      {product.title}
-                    </h3>
-                    <p className="text-[#5d4433] mb-4 text-sm leading-relaxed line-clamp-2">
-                      {product.shortDescription}
+                  <div className="bg-[#f9f3e8] border-2 border-[#d4b896] rounded-3xl p-8 max-w-md mx-auto">
+                    <Package className="w-16 h-16 mx-auto mb-4 text-[#d4af37]" />
+                    <p className="text-2xl font-bold text-[#3d2817] mb-2">
+                      Không tìm thấy sản phẩm
                     </p>
-                    <div className="flex items-center justify-between mb-4">
-                      <div className="text-3xl font-bold text-[#3d2817]">
-                        {formatPrice(product.price)}
-                      </div>
-                      <div className="flex items-center gap-1">
-                        {[...Array(5)].map((_, i) => (
-                          <Star
-                            key={i}
-                            className="w-4 h-4 text-[#d4af37] fill-[#d4af37]"
-                          />
-                        ))}
-                      </div>
-                    </div>
-                    <motion.button
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      className="w-full py-3 rounded-full bg-linear-to-r from-[#d4af37] to-[#b8941f] text-[#3d2817] font-bold shadow-lg flex items-center justify-center gap-2"
-                    >
-                      <Calendar className="w-5 h-5" />
-                      Xem Chi Tiết
-                    </motion.button>
+                    <p className="text-[#5d4433]">
+                      Không có sản phẩm nào phù hợp với từ khóa "{searchQuery}"
+                    </p>
                   </div>
                 </motion.div>
-              ))}
-            </motion.div>
+              ) : (
+                <motion.div
+                  initial="hidden"
+                  animate="visible"
+                  variants={containerVariants}
+                  className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
+                >
+                  {products.map((product) => (
+                    <motion.div
+                      key={product._id}
+                      variants={itemVariants}
+                      whileHover={{ scale: 1.03, y: -10 }}
+                      onClick={() => navigate(`/product/${product._id}`)}
+                      className="bg-white rounded-3xl shadow-xl overflow-hidden cursor-pointer group"
+                    >
+                      <div className="h-80 bg-linear-to-br from-[#f5e6d3] to-[#d4b896] flex items-center justify-center overflow-hidden relative">
+                        <img
+                          src={imgSrc(product.imageLink)}
+                          alt={product.title}
+                          className="object-cover w-full h-full group-hover:scale-110 transition-transform duration-500"
+                          onError={(e) => {
+                            e.currentTarget.src = "/images/placeholder.png";
+                          }}
+                        />
+                        <div className="absolute inset-0 bg-[#3d2817]/0 group-hover:bg-[#3d2817]/20 transition-all duration-300"></div>
+                      </div>
+                      <div className="p-6">
+                        <h3 className="text-2xl font-bold text-[#3d2817] mb-3 group-hover:text-[#d4af37] transition-colors">
+                          {product.title}
+                        </h3>
+                        <p className="text-[#5d4433] mb-4 text-sm leading-relaxed line-clamp-2">
+                          {product.shortDescription}
+                        </p>
+                        <div className="flex items-center justify-between mb-4">
+                          <div className="text-3xl font-bold text-[#3d2817]">
+                            {formatPrice(product.price)}
+                          </div>
+                          <div className="flex items-center gap-1">
+                            {[...Array(5)].map((_, i) => (
+                              <Star
+                                key={i}
+                                className="w-4 h-4 text-[#d4af37] fill-[#d4af37]"
+                              />
+                            ))}
+                          </div>
+                        </div>
+                        <motion.button
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
+                          className="w-full py-3 rounded-full bg-linear-to-r from-[#d4af37] to-[#b8941f] text-[#3d2817] font-bold shadow-lg flex items-center justify-center gap-2"
+                        >
+                          <Calendar className="w-5 h-5" />
+                          Xem Chi Tiết
+                        </motion.button>
+                      </div>
+                    </motion.div>
+                  ))}
+                </motion.div>
+              )}
+            </>
           )}
         </div>
       </section>
