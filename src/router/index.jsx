@@ -6,4 +6,6 @@ export const route = {
   payment: "/payment/:productId",
   orderSuccess: "/order-success",
   orderFailed: "/order-failed",
+  service: "/service",
+  aboutUs: "/about-us",
 };

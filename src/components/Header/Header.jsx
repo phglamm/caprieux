@@ -10,7 +10,7 @@ const navigationItems = [
   { name: "Chính Sách", href: route.policy },
   { name: "Bộ Sưu Tập", href: route.bst },
   { name: "Về Chúng Tôi", href: route.aboutUs },
-  { name: "Liên Hệ", href: route.contact },
+  { name: "Dịch Vụ", href: route.service },
 ];
 
 const Header = ({ scrolled }) => {
