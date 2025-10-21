@@ -75,89 +75,24 @@ export default function AboutUsScreen() {
       title: "Đam Mê Thời Trang",
       description:
         "Chúng tôi tin rằng thời trang là một hình thức nghệ thuật và tự thể hiện. Mỗi sản phẩm được chọn lọc với tình yêu và sự tỉ mỉ.",
-      color: "from-rose-500 to-pink-500",
     },
     {
       icon: <Leaf className="w-12 h-12" />,
       title: "Bền Vững",
       description:
         "Cam kết với nền kinh tế tuần hoàn, giảm thiểu lãng phí thời trang và bảo vệ môi trường cho thế hệ tương lai.",
-      color: "from-green-500 to-emerald-500",
     },
     {
       icon: <Users className="w-12 h-12" />,
       title: "Cộng Đồng",
       description:
         "Xây dựng cộng đồng những người yêu thời trang, nơi mọi người có thể chia sẻ phong cách và trải nghiệm độc đáo.",
-      color: "from-blue-500 to-cyan-500",
     },
     {
       icon: <Award className="w-12 h-12" />,
       title: "Chất Lượng Cao Cấp",
       description:
         "Chỉ mang đến những thiết kế cao cấp từ các thương hiệu uy tín, được kiểm tra và vệ sinh chuyên nghiệp.",
-      color: "from-amber-500 to-yellow-500",
-    },
-  ];
-
-  // Milestones
-  const milestones = [
-    {
-      year: "2020",
-      title: "Ra Mắt",
-      description:
-        "The Caprieux được thành lập với tầm nhìn dân chủ hóa thời trang cao cấp.",
-    },
-    {
-      year: "2021",
-      title: "Mở Rộng",
-      description:
-        "Đạt 1000+ thành viên và mở rộng bộ sưu tập với 500+ thiết kế.",
-    },
-    {
-      year: "2022",
-      title: "Công Nhận",
-      description:
-        "Nhận giải thưởng 'Startup Bền Vững Của Năm' từ Fashion Tech Awards.",
-    },
-    {
-      year: "2023",
-      title: "Tăng Trưởng",
-      description: "Phục vụ 5000+ khách hàng và giảm 50 tấn rác thời trang.",
-    },
-    {
-      year: "2024",
-      title: "Đổi Mới",
-      description:
-        "Ra mắt nền tảng AI giúp khách hàng tìm trang phục hoàn hảo.",
-    },
-  ];
-
-  // Team members
-  const team = [
-    {
-      name: "Nguyễn Minh Anh",
-      role: "Founder & CEO",
-      description: "10+ năm kinh nghiệm trong ngành thời trang cao cấp",
-      image: "👩‍💼",
-    },
-    {
-      name: "Trần Thảo My",
-      role: "Creative Director",
-      description: "Chuyên gia tuyển chọn và phối đồ từ Paris Fashion Week",
-      image: "👩‍🎨",
-    },
-    {
-      name: "Lê Hoàng Nam",
-      role: "Operations Manager",
-      description: "Đảm bảo quy trình vận hành mượt mà và hiệu quả",
-      image: "👨‍💼",
-    },
-    {
-      name: "Phạm Thu Hà",
-      role: "Customer Experience Lead",
-      description: "Tận tâm mang đến trải nghiệm tuyệt vời cho mỗi khách hàng",
-      image: "👩‍💻",
     },
   ];
 
@@ -166,17 +101,20 @@ export default function AboutUsScreen() {
     {
       icon: <MapPin className="w-6 h-6" />,
       title: "Địa Chỉ",
-      details: ["123 Nguyễn Huệ, Quận 1", "TP. Hồ Chí Minh, Việt Nam"],
+      details: [
+        "141 Điện Biên Phủ, Phường Gia Định",
+        "TP. Hồ Chí Minh, Việt Nam",
+      ],
     },
     {
       icon: <Phone className="w-6 h-6" />,
       title: "Điện Thoại",
-      details: ["+84 123 456 789", "+84 987 654 321"],
+      details: ["+84 xxx xxx xxx"],
     },
     {
       icon: <Mail className="w-6 h-6" />,
       title: "Email",
-      details: ["info@caprieux.vn", "support@caprieux.vn"],
+      details: ["hello@thecaprieux.vn"],
     },
     {
       icon: <Clock className="w-6 h-6" />,
@@ -264,7 +202,7 @@ export default function AboutUsScreen() {
             variants={itemVariants}
             className="text-xl lg:text-2xl mb-10 opacity-95 leading-relaxed max-w-4xl mx-auto"
           >
-            Website cho thuê trang phục thiết kế chính hãng.
+            Nơi trải nghiệm trang phục thiết kế cao cấp không giới hạn
           </motion.p>
         </motion.div>
       </section>
@@ -357,70 +295,24 @@ export default function AboutUsScreen() {
                 whileHover={{ scale: 1.03, y: -10 }}
                 className="bg-white rounded-3xl p-8 shadow-xl group"
               >
-                <motion.div
-                  whileHover={{ scale: 1.1, rotate: 360 }}
-                  transition={{ duration: 0.6 }}
-                  className={`bg-linear-to-r ${value.color} text-white w-20 h-20 rounded-2xl flex items-center justify-center mb-6 shadow-xl`}
-                >
-                  {value.icon}
-                </motion.div>
-                <h3 className="text-2xl font-bold text-[#3d2817] mb-4 group-hover:text-[#d4af37] transition-colors">
-                  {value.title}
-                </h3>
+                <div className="flex items-center">
+                  <motion.div
+                    whileHover={{ scale: 1.1, rotate: 360 }}
+                    transition={{ duration: 0.6 }}
+                    className={` text-[#d4af37] w-20 h-20 rounded-2xl flex items-center justify-center mb-6`}
+                  >
+                    {value.icon}
+                  </motion.div>
+                  <h3 className="text-2xl font-bold text-[#3d2817] mb-4 group-hover:text-[#d4af37] transition-colors">
+                    {value.title}
+                  </h3>
+                </div>
                 <p className="text-[#5d4433] leading-relaxed">
                   {value.description}
                 </p>
               </motion.div>
             ))}
           </motion.div>
-        </div>
-      </section>
-
-      {/* Timeline Section */}
-      <section className="w-full bg-[#f5e6d3] py-20 lg:py-28 px-6 lg:px-12">
-        <div className="max-w-5xl mx-auto">
-          <motion.h2
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="text-4xl lg:text-5xl text-center mb-16 text-[#3d2817] font-bold"
-          >
-            Hành Trình Phát Triển
-          </motion.h2>
-
-          <div className="space-y-12">
-            {milestones.map((milestone, idx) => (
-              <motion.div
-                key={idx}
-                initial={{ opacity: 0, x: idx % 2 === 0 ? -50 : 50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8, delay: idx * 0.1 }}
-                className={`flex items-center gap-8 ${
-                  idx % 2 === 0 ? "" : "flex-row-reverse"
-                }`}
-              >
-                <motion.div
-                  whileHover={{ scale: 1.1 }}
-                  className="bg-linear-to-r from-[#d4af37] to-[#b8941f] text-white w-24 h-24 rounded-full flex items-center justify-center font-bold text-xl shadow-2xl shrink-0"
-                >
-                  {milestone.year}
-                </motion.div>
-                <motion.div
-                  whileHover={{ scale: 1.02 }}
-                  className="flex-1 bg-white rounded-3xl p-8 shadow-xl"
-                >
-                  <h3 className="text-2xl font-bold text-[#3d2817] mb-3">
-                    {milestone.title}
-                  </h3>
-                  <p className="text-[#5d4433] leading-relaxed">
-                    {milestone.description}
-                  </p>
-                </motion.div>
-              </motion.div>
-            ))}
-          </div>
         </div>
       </section>
 
@@ -528,7 +420,6 @@ export default function AboutUsScreen() {
                     onChange={handleInputChange}
                     required
                     className="w-full px-4 py-3 rounded-xl border-2 border-[#d4b896] focus:border-[#d4af37] outline-none transition-colors"
-                    placeholder="Nguyễn Văn A"
                   />
                 </div>
 
@@ -543,7 +434,6 @@ export default function AboutUsScreen() {
                     onChange={handleInputChange}
                     required
                     className="w-full px-4 py-3 rounded-xl border-2 border-[#d4b896] focus:border-[#d4af37] outline-none transition-colors"
-                    placeholder="email@example.com"
                   />
                 </div>
 
@@ -557,7 +447,6 @@ export default function AboutUsScreen() {
                     value={formData.phone}
                     onChange={handleInputChange}
                     className="w-full px-4 py-3 rounded-xl border-2 border-[#d4b896] focus:border-[#d4af37] outline-none transition-colors"
-                    placeholder="0123 456 789"
                   />
                 </div>
 
@@ -572,7 +461,6 @@ export default function AboutUsScreen() {
                     onChange={handleInputChange}
                     required
                     className="w-full px-4 py-3 rounded-xl border-2 border-[#d4b896] focus:border-[#d4af37] outline-none transition-colors"
-                    placeholder="Tôi muốn hỏi về..."
                   />
                 </div>
 
@@ -587,7 +475,6 @@ export default function AboutUsScreen() {
                     required
                     rows="4"
                     className="w-full px-4 py-3 rounded-xl border-2 border-[#d4b896] focus:border-[#d4af37] outline-none transition-colors resize-none"
-                    placeholder="Nội dung tin nhắn của bạn..."
                   ></textarea>
                 </div>
 

@@ -66,28 +66,6 @@ export default function ServicesScreen() {
   };
 
   // Try-on process
-  const tryOnSteps = [
-    {
-      icon: <Calendar className="w-8 h-8" />,
-      title: "Đặt Lịch",
-      description: "Chọn ngày nhận đồ phù hợp với lịch trình của bạn",
-    },
-    {
-      icon: <Package className="w-8 h-8" />,
-      title: "Nhận Đồ",
-      description: "Shipper giao 3-5 bộ trang phục đến tận nhà",
-    },
-    {
-      icon: <Camera className="w-8 h-8" />,
-      title: "Thử & Chụp",
-      description: "Thử đồ thoải mái trong 2 ngày, chụp ảnh đẹp",
-    },
-    {
-      icon: <CheckCircle className="w-8 h-8" />,
-      title: "Quyết Định",
-      description: "Giữ lại những gì thích, trả lại những gì không phù hợp",
-    },
-  ];
 
   // Membership plans
   const membershipPlans = [
@@ -114,7 +92,6 @@ export default function ServicesScreen() {
         "Miễn phí ship không giới hạn",
         "3 buổi tư vấn stylist/năm",
         "Ưu tiên đặt hàng mới",
-        "Try-on at home miễn phí",
         "Tích điểm x2",
       ],
       popular: true,
@@ -129,7 +106,6 @@ export default function ServicesScreen() {
         "Miễn phí ship không giới hạn",
         "Tư vấn stylist không giới hạn",
         "Ưu tiên tuyệt đối",
-        "Try-on at home không giới hạn",
         "Tích điểm x3",
         "Quà tặng sinh nhật cao cấp",
         "Mời tham gia sự kiện VIP",
@@ -144,31 +120,26 @@ export default function ServicesScreen() {
       icon: <Gift className="w-12 h-12" />,
       title: "Ưu Đãi Độc Quyền",
       desc: "Giảm giá đặc biệt và ưu tiên đặt hàng các sản phẩm mới nhất",
-      color: "from-pink-500 to-rose-500",
     },
     {
       icon: <Zap className="w-12 h-12" />,
       title: "Dịch Vụ Ưu Tiên",
       desc: "Xử lý đơn hàng nhanh chóng và chăm sóc khách hàng 24/7",
-      color: "from-yellow-500 to-orange-500",
     },
     {
       icon: <Award className="w-12 h-12" />,
       title: "Tích Điểm Thưởng",
       desc: "Tích điểm với mọi đơn hàng, đổi quà hấp dẫn",
-      color: "from-purple-500 to-indigo-500",
     },
     {
       icon: <Shield className="w-12 h-12" />,
       title: "Bảo Hiểm Sản Phẩm",
       desc: "Bảo vệ sản phẩm miễn phí trong thời gian thuê",
-      color: "from-blue-500 to-cyan-500",
     },
     {
       icon: <TrendingUp className="w-12 h-12" />,
       title: "Nâng Cấp Miễn Phí",
       desc: "Cơ hội nâng cấp lên các mẫu cao cấp hơn",
-      color: "from-green-500 to-emerald-500",
     },
     {
       icon: <Heart className="w-12 h-12" />,
@@ -234,125 +205,20 @@ export default function ServicesScreen() {
             variants={itemVariants}
             className="text-xl lg:text-2xl mb-10 opacity-95 leading-relaxed max-w-4xl mx-auto"
           >
-            Trải nghiệm mua sắm hoàn hảo với Try-on at Home và đặc quyền thành
-            viên VIP
+            Trải nghiệm hoàn hảo với đặc quyền thành viên VIP
           </motion.p>
         </motion.div>
       </section>
 
-      {/* Try-on at Home Section */}
-      <section className="w-full bg-[#f5e6d3] py-20 lg:py-28 px-6 lg:px-12">
-        <div className="max-w-6xl mx-auto">
-          <motion.h2
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="text-4xl lg:text-5xl text-center mb-6 text-[#3d2817] font-bold"
-          >
-            Try-on at Home - Thử Đồ Tại Nhà
-          </motion.h2>
-          <motion.p
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            className="text-center text-[#5d4433] text-lg mb-16 max-w-3xl mx-auto"
-          >
-            Trải nghiệm mua sắm hoàn toàn mới - thử đồ thoải mái tại nhà trước
-            khi quyết định
-          </motion.p>
-
-          {/* Process Steps */}
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={containerVariants}
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16"
-          >
-            {tryOnSteps.map((step, idx) => (
-              <motion.div
-                key={idx}
-                variants={scaleVariants}
-                whileHover={{ scale: 1.05 }}
-                className="text-center"
-              >
-                <motion.div
-                  whileHover={{ scale: 1.2, rotate: 360 }}
-                  transition={{ duration: 0.6 }}
-                  className="bg-gradient-to-r from-[#d4af37] to-[#b8941f] text-white w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 shadow-xl"
-                >
-                  {step.icon}
-                </motion.div>
-                <h3 className="text-xl font-bold text-[#3d2817] mb-2">
-                  {step.title}
-                </h3>
-                <p className="text-[#5d4433]">{step.description}</p>
-              </motion.div>
-            ))}
-          </motion.div>
-
-          {/* Benefits */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="bg-white rounded-3xl p-10 shadow-2xl"
-          >
-            <h3 className="text-3xl font-bold text-[#3d2817] mb-8 text-center">
-              Lợi Ích Vượt Trội
-            </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {[
-                {
-                  icon: <Home className="w-6 h-6" />,
-                  text: "Thử đồ thoải mái tại nhà, không vội vã",
-                },
-                {
-                  icon: <Shield className="w-6 h-6" />,
-                  text: "Không mất phí nếu không giữ sản phẩm nào",
-                },
-                {
-                  icon: <Clock className="w-6 h-6" />,
-                  text: "Tiết kiệm thời gian đi lại và xếp hàng",
-                },
-                {
-                  icon: <Heart className="w-6 h-6" />,
-                  text: "Được tư vấn cách phối đồ qua chat/call",
-                },
-              ].map((benefit, idx) => (
-                <motion.div
-                  key={idx}
-                  whileHover={{ x: 10 }}
-                  className="flex items-center gap-4 bg-[#f5e6d3] p-4 rounded-2xl"
-                >
-                  <div className="bg-[#d4af37] text-white p-3 rounded-xl shrink-0">
-                    {benefit.icon}
-                  </div>
-                  <p className="text-[#3d2817] font-semibold">{benefit.text}</p>
-                </motion.div>
-              ))}
-            </div>
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="w-full mt-8 bg-gradient-to-r from-[#d4af37] to-[#b8941f] text-white py-4 rounded-full font-bold text-lg shadow-xl"
-            >
-              Đặt Lịch Try-on Ngay
-            </motion.button>
-          </motion.div>
-        </div>
-      </section>
-
       {/* Membership Plans Section */}
-      <section className="w-full bg-gradient-to-br from-[#3d2817] via-[#5d4433] to-[#3d2817] py-20 lg:py-28 px-6 lg:px-12 text-white">
+      <section className="w-full bg-[#f5e6d3] py-20 lg:py-28 px-6 lg:px-12 text-white">
         <div className="max-w-7xl mx-auto">
           <motion.h2
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="text-4xl lg:text-5xl text-center mb-6 font-bold"
+            className="text-4xl lg:text-5xl  text-[#3d2817] text-center mb-6 font-bold"
           >
             Gói Thành Viên VIP
           </motion.h2>
@@ -360,7 +226,7 @@ export default function ServicesScreen() {
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            className="text-center text-[#f5e6d3] text-lg mb-16 max-w-3xl mx-auto"
+            className="text-center text-[#3d2817] text-lg mb-16 max-w-3xl mx-auto"
           >
             Chọn gói phù hợp và tận hưởng đặc quyền cao cấp
           </motion.p>
@@ -550,7 +416,7 @@ export default function ServicesScreen() {
                 <motion.div
                   whileHover={{ rotate: 360 }}
                   transition={{ duration: 0.6 }}
-                  className={`bg-gradient-to-r ${benefit.color} text-white w-20 h-20 rounded-2xl flex items-center justify-center mb-6 shadow-xl mx-auto`}
+                  className={` text-[#d4af37] w-20 h-20 rounded-2xl flex items-center justify-center mb-6 mx-auto`}
                 >
                   {benefit.icon}
                 </motion.div>
@@ -611,7 +477,7 @@ export default function ServicesScreen() {
               className="bg-[#d4af37] text-[#3d2817] px-8 py-4 rounded-full text-lg font-bold shadow-xl flex items-center gap-2"
             >
               <Phone className="w-5 h-5" />
-              Hotline: 0123 456 789
+              Hotline: +84 xxx xxx xxx
             </motion.button>
             <motion.button
               whileHover={{
@@ -623,7 +489,7 @@ export default function ServicesScreen() {
               className="bg-transparent text-[#f5e6d3] px-8 py-4 rounded-full text-lg font-bold border-2 border-[#f5e6d3] transition-all flex items-center gap-2"
             >
               <Mail className="w-5 h-5" />
-              Email: info@caprieux.vn
+              Email: hello@thecaprieux.vn
             </motion.button>
           </motion.div>
         </motion.div>

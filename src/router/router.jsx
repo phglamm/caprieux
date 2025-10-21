@@ -3,6 +3,9 @@ import { createBrowserRouter } from "react-router-dom";
 import HomeScreen from "../pages/HomeScreen/HomeScreen";
 import { route } from ".";
 import Layout from "../layouts/Layout";
+import ServicesScreen from "../pages/ServicesScreen/ServicesScreen";
+import AdminLayout from "../layouts/AdminLayout";
+import AdminDashboardScreen from "../pages/AdminDashboardScreen/AdminDashboardScreen";
 import PolicyScreen from "../pages/PolicyScreen/PolicyScreen";
 import BstScreen from "../pages/BstScreen/BstScreen";
 import ProductDetailScreen from "../pages/ProductDetailScreen/ProductDetailScreen";
@@ -10,7 +13,6 @@ import PaymentScreen from "../pages/PaymentScreen/PaymentScreen";
 import OrderSuccessScreen from "../pages/OrderSuccessScreen/OrderSuccessScreen";
 import OrderFailedScreen from "../pages/OrderFailedScreen/OrderFailedScreen";
 import AboutUsScreen from "../pages/AboutUsScreen/AboutUsScreen";
-import ServicesScreen from "../pages/ServicesScreen/ServicesScreen";
 
 export const router = createBrowserRouter([
   {
@@ -52,6 +54,16 @@ export const router = createBrowserRouter([
       {
         path: route.service,
         element: <ServicesScreen />,
+      },
+    ],
+  },
+  {
+    path: route.admin,
+    element: <AdminLayout />,
+    children: [
+      {
+        index: true,
+        element: <AdminDashboardScreen />,
       },
     ],
   },

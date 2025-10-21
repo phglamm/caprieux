@@ -8,4 +8,5 @@ export const route = {
   orderFailed: "/order-failed",
   service: "/service",
   aboutUs: "/about-us",
+  admin: "/admin",
 };

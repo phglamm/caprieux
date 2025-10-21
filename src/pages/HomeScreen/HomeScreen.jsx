@@ -232,8 +232,7 @@ const HomeScreen = () => {
             variants={itemVariants}
             className="text-xl lg:text-2xl mb-10 opacity-95 leading-relaxed max-w-4xl"
           >
-            Trải nghiệm trang phục designer cao cấp không giới hạn. Thuê. Mặc.
-            Lặp Lại.
+            Thanh lịch – Tự tin – Gần gũi – Bền vững
           </motion.p>
           <motion.div
             variants={itemVariants}
