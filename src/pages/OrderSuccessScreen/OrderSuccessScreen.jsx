@@ -23,18 +23,13 @@ export default function OrderSuccessScreen() {
     const orderId = searchParams.get("orderId");
     const amount = searchParams.get("amount");
     const orderCode = searchParams.get("orderCode");
-    const code = searchParams.get("code");
-    console.log("Order Success Params:", {
-      orderId,
-      amount,
-      orderCode,
-      code,
-    });
+    const cancel = searchParams.get("cancel");
+
     const postWebhook = async () => {
       try {
         const requestData = {
-          code,
           orderCode,
+          cancel,
         };
         const response = await axios.post(
           "https://caprieux-be.onrender.com/api/payments/webhook",

@@ -24,17 +24,13 @@ export default function OrderFailedScreen() {
     const errorCode = searchParams.get("errorCode");
     const errorMessage = searchParams.get("message");
     const orderId = searchParams.get("orderId");
-    const code = searchParams.get("code");
     const orderCode = searchParams.get("orderCode");
-    console.log("Order Failed Params:", {
-      orderId,
-      orderCode,
-      code,
-    });
+    const cancel = searchParams.get("cancel");
+
     const postWebhook = async () => {
       try {
         const requestData = {
-          code,
+          cancel,
           orderCode,
         };
         const response = await axios.post(
