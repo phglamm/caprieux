@@ -5,7 +5,6 @@ import { route } from ".";
 import Layout from "../layouts/Layout";
 import ServicesScreen from "../pages/ServicesScreen/ServicesScreen";
 import AdminLayout from "../layouts/AdminLayout";
-import AdminDashboardScreen from "../pages/AdminDashboardScreen/AdminDashboardScreen";
 import PolicyScreen from "../pages/PolicyScreen/PolicyScreen";
 import BstScreen from "../pages/BstScreen/BstScreen";
 import ProductDetailScreen from "../pages/ProductDetailScreen/ProductDetailScreen";
@@ -13,6 +12,8 @@ import PaymentScreen from "../pages/PaymentScreen/PaymentScreen";
 import OrderSuccessScreen from "../pages/OrderSuccessScreen/OrderSuccessScreen";
 import OrderFailedScreen from "../pages/OrderFailedScreen/OrderFailedScreen";
 import AboutUsScreen from "../pages/AboutUsScreen/AboutUsScreen";
+import AdminOrderScreen from "../pages/AdminOrderScreen/AdminOrderScreen";
+import AdminProducts from "../pages/AdminProducts/AdminProducts";
 
 export const router = createBrowserRouter([
   {
@@ -62,9 +63,17 @@ export const router = createBrowserRouter([
     element: <AdminLayout />,
     children: [
       {
-        index: true,
-        element: <AdminDashboardScreen />,
+        path: route.adminProducts,
+        element: <AdminProducts />,
       },
+      {
+        path: route.adminOrders,
+        element: <AdminOrderScreen />,
+      },
+      // {
+      //   path: route.adminProducts,
+      //   element: <AdminProductScreen />,
+      // },
     ],
   },
 ]);

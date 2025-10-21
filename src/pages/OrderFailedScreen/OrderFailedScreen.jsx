@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import axios from "axios";
 
 export default function OrderFailedScreen() {
   const navigate = useNavigate();
@@ -23,7 +24,23 @@ export default function OrderFailedScreen() {
     const errorCode = searchParams.get("errorCode");
     const errorMessage = searchParams.get("message");
     const orderId = searchParams.get("orderId");
-
+    const code = searchParams.get("code");
+    const orderCode = searchParams.get("orderCode");
+    const postWebhook = async () => {
+      try {
+        const response = await axios.post(
+          "https://caprieux.vn/api/payment/webhook",
+          {
+            code,
+            orderCode,
+          }
+        );
+        console.log("Webhook posted successfully:", response.data);
+      } catch (error) {
+        console.error("Error posting to webhook:", error);
+      }
+    };
+    postWebhook();
     if (errorCode || errorMessage) {
       setErrorDetails({
         errorCode: errorCode || "PAYMENT_FAILED",

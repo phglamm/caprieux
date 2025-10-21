@@ -9,4 +9,8 @@ export const route = {
   service: "/service",
   aboutUs: "/about-us",
   admin: "/admin",
+  adminProducts: "/admin/products",
+  adminOrders: "/admin/orders",
+  adminUsers: "/admin/users",
+  adminSettings: "/admin/settings",
 };

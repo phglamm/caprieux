@@ -1,59 +1,118 @@
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
-import { Star, Calendar, Package, Sparkles, Search } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  Star,
+  Calendar,
+  Package,
+  Sparkles,
+  SlidersHorizontal,
+  X,
+} from "lucide-react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 
 export default function BstScreen() {
   const [products, setProducts] = useState([]);
+  const [filteredProducts, setFilteredProducts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
-  const [searchLoading, setSearchLoading] = useState(false);
   const [searchError, setSearchError] = useState(null);
+  const [showFilters, setShowFilters] = useState(false);
+
+  // Filter states
+  const [priceRange, setPriceRange] = useState([0, 1000000]);
+  const [selectedSizes, setSelectedSizes] = useState([]);
+  const [selectedBrands, setSelectedBrands] = useState([]);
+
   const navigate = useNavigate();
   const location = useLocation();
 
-  // read searchTerm from query string (set by Header form)
+  // Read searchTerm from query string
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const term = params.get("searchTerm") || "";
     setSearchQuery(term);
   }, [location.search]);
 
+  // Initial fetch
   useEffect(() => {
-    let mounted = true;
-    setLoading(true);
-    const fetchProducts = async (search) => {
+    const fetchProducts = async () => {
+      setLoading(true);
       try {
-        const url = search
-          ? `https://caprieux-be.onrender.com/api/products?searchTerm=${encodeURIComponent(
-              search
-            )}`
-          : "https://caprieux-be.onrender.com/api/products";
+        const url = "https://caprieux-be.onrender.com/api/products";
         const response = await axios.get(url);
-        if (mounted) {
-          setProducts(response.data || []);
-          setError(null);
-        }
+        setProducts(response.data || []);
+        setError(null);
       } catch (err) {
-        if (mounted) {
-          setError(err.message || "Failed to load products");
-        }
+        setError(err.message || "Failed to load products");
       } finally {
-        if (mounted) setLoading(false);
+        setLoading(false);
       }
     };
 
-    // initial load without search
     fetchProducts();
-    return () => {
-      mounted = false;
-    };
   }, []);
 
-  // fetchProducts is also used by the search form handler below
+  // Search when query changes
+  useEffect(() => {
+    const doSearch = async () => {
+      setLoading(true);
+      setSearchError(null);
+      try {
+        const url = searchQuery
+          ? `https://caprieux-be.onrender.com/api/products?searchTerm=${encodeURIComponent(
+              searchQuery
+            )}`
+          : "https://caprieux-be.onrender.com/api/products";
+        const resp = await axios.get(url);
+        setProducts(resp.data || []);
+      } catch (err) {
+        setSearchError(err.message || "Search failed");
+      } finally {
+        setLoading(false);
+      }
+    };
+    doSearch();
+  }, [searchQuery]);
+
+  // Extract unique sizes and brands from products
+  const availableSizes = [
+    ...new Set(products.map((p) => p.details?.sizes).filter(Boolean)),
+  ];
+  const availableBrands = [
+    ...new Set(products.map((p) => p.brand).filter(Boolean)),
+  ];
+
+  // Apply filters whenever products or filter states change
+  useEffect(() => {
+    let filtered = [...products];
+
+    // Price filter
+    filtered = filtered.filter(
+      (p) => p.price >= priceRange[0] && p.price <= priceRange[1]
+    );
+
+    // Size filter
+    if (selectedSizes.length > 0) {
+      filtered = filtered.filter((p) =>
+        selectedSizes.includes(p.details?.sizes)
+      );
+    }
+
+    // Brand filter
+    if (selectedBrands.length > 0) {
+      filtered = filtered.filter((p) =>
+        selectedBrands.some(
+          (brand) => p.brand?.toLowerCase() === brand.toLowerCase()
+        )
+      );
+    }
+
+    setFilteredProducts(filtered);
+  }, [products, priceRange, selectedSizes, selectedBrands]);
+
   const formatPrice = (price) =>
     new Intl.NumberFormat("vi-VN", {
       style: "currency",
@@ -65,39 +124,29 @@ export default function BstScreen() {
     return link;
   };
 
-  // products will be populated by initial fetch or API search
-  // (removed client-side title filtering to rely on backend search)
+  const toggleSize = (size) => {
+    setSelectedSizes((prev) =>
+      prev.includes(size) ? prev.filter((s) => s !== size) : [...prev, size]
+    );
+  };
 
-  // perform API search whenever searchQuery changes (set from header via query param)
-  useEffect(() => {
-    let mounted = true;
-    const doSearch = async () => {
-      setSearchLoading(true);
-      setSearchError(null);
-      setLoading(true);
-      try {
-        const url = searchQuery
-          ? `https://caprieux-be.onrender.com/api/products?searchTerm=${encodeURIComponent(
-              searchQuery
-            )}`
-          : "https://caprieux-be.onrender.com/api/products";
-        const resp = await axios.get(url);
-        if (mounted) setProducts(resp.data || []);
-      } catch (err) {
-        if (mounted) setSearchError(err.message || "Search failed");
-      } finally {
-        if (mounted) {
-          setSearchLoading(false);
-          setLoading(false);
-        }
-      }
-    };
-    // trigger search on mount and when term changes
-    doSearch();
-    return () => {
-      mounted = false;
-    };
-  }, [searchQuery]);
+  const toggleBrand = (brand) => {
+    setSelectedBrands((prev) =>
+      prev.includes(brand) ? prev.filter((b) => b !== brand) : [...prev, brand]
+    );
+  };
+
+  const clearFilters = () => {
+    setPriceRange([0, 1000000]);
+    setSelectedSizes([]);
+    setSelectedBrands([]);
+  };
+
+  const hasActiveFilters =
+    priceRange[0] > 0 ||
+    priceRange[1] < 1000000 ||
+    selectedSizes.length > 0 ||
+    selectedBrands.length > 0;
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -123,9 +172,9 @@ export default function BstScreen() {
   };
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-[#f5e6d3] to-[#d4b896]">
+    <div className="min-h-screen bg-gradient-to-br from-[#f5e6d3] to-[#d4b896]">
       {/* Hero Section */}
-      <section className="relative w-full bg-linear-to-br from-[#3d2817] via-[#5d4433] to-[#3d2817] py-24 lg:py-32 text-center text-[#f5e6d3] overflow-hidden">
+      <section className="relative w-full bg-gradient-to-br from-[#3d2817] via-[#5d4433] to-[#3d2817] py-24 lg:py-32 text-center text-[#f5e6d3] overflow-hidden">
         <div
           className="absolute inset-0 opacity-10"
           style={{
@@ -135,7 +184,6 @@ export default function BstScreen() {
           }}
         ></div>
 
-        {/* Floating sparkles */}
         <motion.div
           animate={{ y: [-20, 0, -20] }}
           transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
@@ -174,14 +222,157 @@ export default function BstScreen() {
           >
             Khám phá những trang phục cao cấp, được tuyển chọn kỹ lưỡng
           </motion.p>
-
-          {/* Search is in the Header; BstScreen reads ?searchTerm= from the URL and performs the fetch */}
         </motion.div>
       </section>
 
       {/* Products Section */}
       <section className="w-full bg-[#f5e6d3] py-20 lg:py-28 px-6 lg:px-12">
         <div className="max-w-7xl mx-auto">
+          {/* Filter Toggle Button */}
+          <div className="flex justify-between items-center mb-8">
+            <h2 className="text-2xl font-bold text-[#3d2817]">
+              {filteredProducts.length} sản phẩm
+            </h2>
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => setShowFilters(!showFilters)}
+              className="flex items-center gap-2 px-6 py-3 bg-[#3d2817] text-[#f5e6d3] rounded-full font-semibold shadow-lg"
+            >
+              <SlidersHorizontal className="w-5 h-5" />
+              Bộ Lọc
+              {hasActiveFilters && (
+                <span className="bg-[#d4af37] text-[#3d2817] px-2 py-1 rounded-full text-xs">
+                  {selectedSizes.length +
+                    selectedBrands.length +
+                    (priceRange[0] > 0 || priceRange[1] < 1000000 ? 1 : 0)}
+                </span>
+              )}
+            </motion.button>
+          </div>
+
+          {/* Filter Panel */}
+          <AnimatePresence>
+            {showFilters && (
+              <motion.div
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: "auto", opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                transition={{ duration: 0.3 }}
+                className="overflow-hidden mb-8"
+              >
+                <div className="bg-white rounded-3xl shadow-xl p-8">
+                  <div className="flex justify-between items-center mb-6">
+                    <h3 className="text-2xl font-bold text-[#3d2817]">
+                      Lọc Sản Phẩm
+                    </h3>
+                    {hasActiveFilters && (
+                      <button
+                        onClick={clearFilters}
+                        className="text-[#d4af37] hover:text-[#b8941f] font-semibold flex items-center gap-2"
+                      >
+                        <X className="w-4 h-4" />
+                        Xóa Bộ Lọc
+                      </button>
+                    )}
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    {/* Price Filter */}
+                    <div>
+                      <h4 className="font-bold text-[#3d2817] mb-4">Giá</h4>
+                      <div className="space-y-4">
+                        <div>
+                          <label className="text-sm text-[#5d4433] mb-2 block">
+                            Từ: {formatPrice(priceRange[0])}
+                          </label>
+                          <input
+                            type="range"
+                            min="0"
+                            max="1000000"
+                            step="50000"
+                            value={priceRange[0]}
+                            onChange={(e) =>
+                              setPriceRange([
+                                Number(e.target.value),
+                                priceRange[1],
+                              ])
+                            }
+                            className="w-full"
+                          />
+                        </div>
+                        <div>
+                          <label className="text-sm text-[#5d4433] mb-2 block">
+                            Đến: {formatPrice(priceRange[1])}
+                          </label>
+                          <input
+                            type="range"
+                            min="0"
+                            max="1000000"
+                            step="50000"
+                            value={priceRange[1]}
+                            onChange={(e) =>
+                              setPriceRange([
+                                priceRange[0],
+                                Number(e.target.value),
+                              ])
+                            }
+                            className="w-full"
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Size Filter */}
+                    <div>
+                      <h4 className="font-bold text-[#3d2817] mb-4">Kích Cỡ</h4>
+                      <div className="flex flex-wrap gap-2">
+                        {availableSizes.map((size) => (
+                          <button
+                            key={size}
+                            onClick={() => toggleSize(size)}
+                            className={`px-4 py-2 rounded-full font-semibold transition-all ${
+                              selectedSizes.includes(size)
+                                ? "bg-[#d4af37] text-[#3d2817]"
+                                : "bg-[#f5e6d3] text-[#5d4433] hover:bg-[#d4b896]"
+                            }`}
+                          >
+                            {size}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Brand Filter */}
+                    <div>
+                      <h4 className="font-bold text-[#3d2817] mb-4">
+                        Thương Hiệu
+                      </h4>
+                      <div className="space-y-2">
+                        {availableBrands.map((brand) => (
+                          <label
+                            key={brand}
+                            className="flex items-center gap-3 cursor-pointer hover:bg-[#f5e6d3] p-2 rounded-lg transition-colors"
+                          >
+                            <input
+                              type="checkbox"
+                              checked={selectedBrands.includes(brand)}
+                              onChange={() => toggleBrand(brand)}
+                              className="w-5 h-5 accent-[#d4af37]"
+                            />
+                            <span className="text-[#5d4433] font-medium capitalize">
+                              {brand}
+                            </span>
+                          </label>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
           {loading && (
             <motion.div
               initial={{ opacity: 0 }}
@@ -189,7 +380,9 @@ export default function BstScreen() {
               className="text-center py-20 text-2xl text-[#5d4433] font-semibold"
             >
               <Package className="w-16 h-16 mx-auto mb-4 text-[#d4af37] animate-pulse" />
-              Đang tải sản phẩm...
+              {searchQuery
+                ? `Đang tìm kiếm sản phẩm "${searchQuery}"...`
+                : "Đang tải sản phẩm..."}
             </motion.div>
           )}
 
@@ -206,14 +399,6 @@ export default function BstScreen() {
             </motion.div>
           )}
 
-          {/* Search loading / error */}
-          {searchLoading && !loading && (
-            <div className="text-center py-6 text-[#5d4433]">
-              <Package className="w-12 h-12 mx-auto mb-2 text-[#d4af37] animate-pulse" />
-              Đang tìm kiếm "{searchQuery}"...
-            </div>
-          )}
-
           {searchError && (
             <div className="text-center py-4 text-sm text-red-600">
               Lỗi tìm kiếm: {searchError}
@@ -222,7 +407,7 @@ export default function BstScreen() {
 
           {!loading && !error && (
             <>
-              {products.length === 0 ? (
+              {filteredProducts.length === 0 ? (
                 <motion.div
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
@@ -234,7 +419,9 @@ export default function BstScreen() {
                       Không tìm thấy sản phẩm
                     </p>
                     <p className="text-[#5d4433]">
-                      Không có sản phẩm nào phù hợp với từ khóa "{searchQuery}"
+                      {searchQuery
+                        ? `Không có sản phẩm nào phù hợp với từ khóa "${searchQuery}"`
+                        : "Không có sản phẩm nào phù hợp với bộ lọc"}
                     </p>
                   </div>
                 </motion.div>
@@ -245,15 +432,15 @@ export default function BstScreen() {
                   variants={containerVariants}
                   className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
                 >
-                  {products.map((product) => (
+                  {filteredProducts.map((product) => (
                     <motion.div
                       key={product._id}
-                      variants={itemVariants}
-                      whileHover={{ scale: 1.03, y: -10 }}
+                      // variants={itemVariants}
+                      // whileHover={{ scale: 1.03, y: -10 }}
                       onClick={() => navigate(`/product/${product._id}`)}
                       className="bg-white rounded-3xl shadow-xl overflow-hidden cursor-pointer group"
                     >
-                      <div className="h-80 bg-linear-to-br from-[#f5e6d3] to-[#d4b896] flex items-center justify-center overflow-hidden relative">
+                      <div className="h-80 bg-gradient-to-br from-[#f5e6d3] to-[#d4b896] flex items-center justify-center overflow-hidden relative">
                         <img
                           src={imgSrc(product.imageLink)}
                           alt={product.title}
@@ -275,19 +462,11 @@ export default function BstScreen() {
                           <div className="text-3xl font-bold text-[#3d2817]">
                             {formatPrice(product.price)}
                           </div>
-                          <div className="flex items-center gap-1">
-                            {[...Array(5)].map((_, i) => (
-                              <Star
-                                key={i}
-                                className="w-4 h-4 text-[#d4af37] fill-[#d4af37]"
-                              />
-                            ))}
-                          </div>
                         </div>
                         <motion.button
                           whileHover={{ scale: 1.05 }}
                           whileTap={{ scale: 0.95 }}
-                          className="w-full py-3 rounded-full bg-linear-to-r from-[#d4af37] to-[#b8941f] text-[#3d2817] font-bold shadow-lg flex items-center justify-center gap-2"
+                          className="w-full py-3 rounded-full bg-gradient-to-r from-[#d4af37] to-[#b8941f] text-[#3d2817] font-bold shadow-lg flex items-center justify-center gap-2"
                         >
                           <Calendar className="w-5 h-5" />
                           Xem Chi Tiết

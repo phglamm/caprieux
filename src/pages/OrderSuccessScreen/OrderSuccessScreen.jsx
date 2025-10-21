@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import axios from "axios";
 
 export default function OrderSuccessScreen() {
   const navigate = useNavigate();
@@ -22,7 +23,22 @@ export default function OrderSuccessScreen() {
     const orderId = searchParams.get("orderId");
     const amount = searchParams.get("amount");
     const orderCode = searchParams.get("orderCode");
-
+    const code = searchParams.get("code");
+    const postWebhook = async () => {
+      try {
+        const response = await axios.post(
+          "https://caprieux.vn/api/payment/webhook",
+          {
+            code,
+            orderCode,
+          }
+        );
+        console.log("Webhook posted successfully:", response.data);
+      } catch (error) {
+        console.error("Error posting to webhook:", error);
+      }
+    };
+    postWebhook();
     if (orderId || orderCode) {
       setOrderDetails({
         orderId: orderId || orderCode || "N/A",

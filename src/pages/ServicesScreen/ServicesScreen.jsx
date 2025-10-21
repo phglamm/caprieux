@@ -210,6 +210,64 @@ export default function ServicesScreen() {
         </motion.div>
       </section>
 
+      <section className="w-full bg-[#f5e6d3] py-20 lg:py-28 px-6 lg:px-12">
+        <div className="max-w-7xl mx-auto">
+          <motion.h2
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.8 }}
+            className="text-4xl lg:text-5xl text-center mb-16 text-[#3d2817] font-bold"
+          >
+            Dịch Vụ Nổi Bật
+          </motion.h2>
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={containerVariants}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+          >
+            {[
+              {
+                icon: <Crown className="w-12 h-12" />,
+                title: "Stylish Online",
+                desc: "Tư vấn phong cách cá nhân hóa bởi chuyên gia thời trang",
+              },
+              {
+                icon: <Package className="w-12 h-12" />,
+                title: "Try-on Tại Nhà",
+                desc: "Thử đồ thoải mái ngay tại nhà trước khi quyết định",
+              },
+              {
+                icon: <Crown className="w-12 h-12" />,
+                title: "Đăng Ký Thành Viên",
+                desc: "Trở thành thành viên VIP để nhận ưu đãi và dịch vụ cao cấp",
+              },
+            ].map((feature, idx) => (
+              <motion.div
+                key={idx}
+                variants={scaleVariants}
+                whileHover={{ scale: 1.05, y: -10 }}
+                className="bg-linear-to-br from-white to-[#f9f3e8] p-10 rounded-3xl text-center shadow-xl cursor-pointer group"
+              >
+                <motion.div
+                  whileHover={{ rotate: 360 }}
+                  transition={{ duration: 0.6 }}
+                  className="text-[#d4af37] mb-4 flex justify-center"
+                >
+                  {feature.icon}
+                </motion.div>
+                <h3 className="text-2xl mb-3 text-[#3d2817] font-bold group-hover:text-[#d4af37] transition-colors">
+                  {feature.title}
+                </h3>
+                <p className="text-[#5d4433] leading-relaxed">{feature.desc}</p>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
       {/* Membership Plans Section */}
       <section className="w-full bg-[#f5e6d3] py-20 lg:py-28 px-6 lg:px-12 text-white">
         <div className="max-w-7xl mx-auto">
