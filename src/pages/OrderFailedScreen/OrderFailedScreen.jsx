@@ -38,7 +38,7 @@ export default function OrderFailedScreen() {
           orderCode,
         };
         const response = await axios.post(
-          "https://caprieux-be.onrender.com/api/payment/webhook",
+          "https://caprieux-be.onrender.com/api/payments/webhook",
           requestData
         );
         console.log("Webhook posted successfully:", response.data);
