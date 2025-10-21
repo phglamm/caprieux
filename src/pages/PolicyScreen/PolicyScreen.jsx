@@ -419,7 +419,7 @@ export default function PolicyScreen() {
       </section>
 
       {/* Quick Navigation */}
-      <section className="w-full bg-white py-8 shadow-md sticky top-0 z-50">
+      <section className="w-full bg-white py-8 shadow-md">
         <div className="max-w-7xl mx-auto px-6 lg:px-12">
           <div className="flex flex-wrap gap-4 justify-center">
             {[

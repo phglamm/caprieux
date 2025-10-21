@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { route } from "../../router";
-
+import logo from "../../assets/logo.png";
 const navigationItems = [
   { name: "Trang Chủ", href: route.home },
   { name: "Chính Sách", href: route.policy },
@@ -24,9 +24,16 @@ const Header = ({ scrolled }) => {
         <div className="flex justify-between items-center">
           <motion.div
             whileHover={{ scale: 1.05 }}
-            className="text-3xl lg:text-4xl font-bold text-[#f5e6d3] tracking-[0.2em] cursor-pointer"
+            className="flex items-center text-xl lg:text-xl font-bold text-[#f5e6d3] tracking-[0.08em] cursor-pointer"
           >
-            THE CAPRIEUX
+            <img
+              src={logo}
+              alt="The Caprieux"
+              className="h-10 lg:h-14 xl:h-16"
+            />
+            <span className="whitespace-nowrap uppercase text-4xl ">
+              The Caprieux
+            </span>
           </motion.div>
 
           <nav className="flex gap-8 items-center">

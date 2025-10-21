@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   ChevronRight,
@@ -13,14 +13,21 @@ import {
   Sparkles,
   Heart,
   Search,
+  ChevronLeft,
 } from "lucide-react";
 import videoBanner from "../../assets/videobanner1.mp4";
-import posterImage from "../../assets/react.svg";
 import { route } from "../../router";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { Navigation, Pagination, Autoplay, FreeMode } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
 const HomeScreen = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const navigate = useNavigate();
+
   const testimonials = [
     {
       id: 1,
@@ -48,6 +55,100 @@ const HomeScreen = () => {
       currency: "VND",
     }).format(price);
   };
+
+  // New products state (Sản phẩm mới về)
+  const [newProducts, setNewProducts] = useState([]);
+  const [newLoading, setNewLoading] = useState(false);
+  const [newError, setNewError] = useState(null);
+
+  // Custom Carousel State
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+  const [itemsPerView, setItemsPerView] = useState(1);
+
+  const imgSrc = (link) => {
+    if (!link) return "/images/placeholder.png";
+    return link;
+  };
+
+  useEffect(() => {
+    let mounted = true;
+    const fetchNew = async () => {
+      setNewLoading(true);
+      setNewError(null);
+      try {
+        const resp = await axios.get(
+          "https://caprieux-be.onrender.com/api/products?limit=8"
+        );
+        if (mounted) setNewProducts(resp.data || []);
+      } catch (err) {
+        if (mounted) setNewError(err.message || "Failed to load new products");
+      } finally {
+        if (mounted) setNewLoading(false);
+      }
+    };
+
+    fetchNew();
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
+  // Handle responsive items per view
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 1280) {
+        setItemsPerView(4);
+      } else if (window.innerWidth >= 1024) {
+        setItemsPerView(3);
+      } else if (window.innerWidth >= 640) {
+        setItemsPerView(2);
+      } else {
+        setItemsPerView(1);
+      }
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  // Auto-play functionality
+  useEffect(() => {
+    if (!isAutoPlaying || newProducts.length === 0) return;
+
+    const interval = setInterval(() => {
+      setCurrentIndex((prev) => {
+        const maxIndex = Math.max(0, newProducts.length - itemsPerView);
+        return prev >= maxIndex ? 0 : prev + 1;
+      });
+    }, 4000);
+
+    return () => clearInterval(interval);
+  }, [isAutoPlaying, newProducts.length, itemsPerView]);
+
+  const handlePrevious = () => {
+    setIsAutoPlaying(false);
+    setCurrentIndex((prev) => {
+      const maxIndex = Math.max(0, newProducts.length - itemsPerView);
+      return prev <= 0 ? maxIndex : prev - 1;
+    });
+  };
+
+  const handleNext = () => {
+    setIsAutoPlaying(false);
+    setCurrentIndex((prev) => {
+      const maxIndex = Math.max(0, newProducts.length - itemsPerView);
+      return prev >= maxIndex ? 0 : prev + 1;
+    });
+  };
+
+  const goToSlide = (index) => {
+    setIsAutoPlaying(false);
+    setCurrentIndex(index);
+  };
+
+  const maxIndex = Math.max(0, newProducts.length - itemsPerView);
 
   // Animation variants
   const containerVariants = {
@@ -226,6 +327,210 @@ const HomeScreen = () => {
               </motion.div>
             ))}
           </motion.div>
+        </div>
+      </section>
+
+      {/* Sản phẩm mới về - New Arrivals */}
+      <section className="w-full bg-linear-to-br from-[#f5e6d3] via-white to-[#f5e6d3] py-20 lg:py-28 px-6 lg:px-12 relative overflow-hidden">
+        {/* Decorative pattern overlay */}
+        <div
+          className="absolute inset-0 opacity-5"
+          style={{
+            backgroundImage:
+              "radial-gradient(circle, #3d2817 1px, transparent 1px)",
+            backgroundSize: "40px 40px",
+          }}
+        ></div>
+
+        <div className="max-w-7xl mx-auto relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.8 }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl lg:text-5xl text-[#3d2817] font-bold mb-4">
+              Sản Phẩm Mới Về
+            </h2>
+            <p className="text-lg text-[#5d4433] max-w-2xl mx-auto leading-relaxed">
+              Khám phá những thiết kế độc đáo và sang trọng nhất trong bộ sưu
+              tập của chúng tôi
+            </p>
+          </motion.div>
+
+          {newLoading && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="text-center py-20"
+            >
+              <motion.div
+                animate={{ rotate: 360 }}
+                transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                className="inline-block"
+              >
+                <Sparkles className="w-12 h-12 text-[#d4af37]" />
+              </motion.div>
+              <p className="text-2xl text-[#5d4433] font-semibold mt-4">
+                Đang tải sản phẩm mới...
+              </p>
+            </motion.div>
+          )}
+
+          {newError && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-center py-10 bg-red-50 rounded-3xl border-2 border-red-200"
+            >
+              <p className="text-xl text-red-600 font-semibold">
+                Lỗi: {newError}
+              </p>
+            </motion.div>
+          )}
+
+          {!newLoading && !newError && newProducts.length > 0 && (
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.3 }}
+            >
+              <Swiper
+                modules={[Autoplay, FreeMode]}
+                spaceBetween={32}
+                slidesPerView={1}
+                breakpoints={{
+                  640: { slidesPerView: 2, spaceBetween: 24 },
+                  1024: { slidesPerView: 3, spaceBetween: 32 },
+                  1280: { slidesPerView: 4, spaceBetween: 32 },
+                }}
+                autoplay={{ delay: 4000, disableOnInteraction: false }}
+                loop={newProducts.length > 3}
+              >
+                {newProducts.map((p, index) => (
+                  <SwiperSlide key={p._id}>
+                    <motion.div
+                      initial={{ opacity: 0, y: 50 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.6, delay: index * 0.1 }}
+                      whileHover={{ y: -12 }}
+                      onClick={() => navigate(`/product/${p._id}`)}
+                      className="bg-white rounded-3xl shadow-2xs overflow-hidden cursor-pointer h-[80%] relative"
+                    >
+                      {/* Image Container */}
+                      <div className="h-80 bg-linear-to-br from-[#f5e6d3] to-[#d4b896] flex items-center justify-center overflow-hidden relative">
+                        <motion.img
+                          whileHover={{ scale: 1.15 }}
+                          transition={{ duration: 0.6, ease: "easeOut" }}
+                          src={imgSrc(p.imageLink)}
+                          alt={p.title}
+                          className="object-cover w-full h-full"
+                          onError={(e) =>
+                            (e.currentTarget.src = "/images/placeholder.png")
+                          }
+                        />
+                        {/* Overlay gradient on hover */}
+                        <motion.div
+                          initial={{ opacity: 0 }}
+                          whileHover={{ opacity: 1 }}
+                          transition={{ duration: 0.3 }}
+                          className="absolute inset-0 bg-linear-to-t from-[#3d2817]/60 via-transparent to-transparent"
+                        >
+                          <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between">
+                            <motion.div
+                              initial={{ x: -20, opacity: 0 }}
+                              whileHover={{ x: 0, opacity: 1 }}
+                              transition={{ duration: 0.3 }}
+                              className="text-white font-semibold flex items-center gap-2 bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full"
+                            >
+                              <Heart className="w-4 h-4" />
+                              Yêu thích
+                            </motion.div>
+                            <motion.div
+                              initial={{ x: 20, opacity: 0 }}
+                              whileHover={{ x: 0, opacity: 1 }}
+                              transition={{ duration: 0.3 }}
+                              className="text-white font-semibold"
+                            >
+                              <ChevronRight className="w-6 h-6" />
+                            </motion.div>
+                          </div>
+                        </motion.div>
+                      </div>
+
+                      {/* Product Info */}
+                      <div className="p-6 bg-linear-to-br from-white to-[#f9f3e8]">
+                        <h3 className="text-xl font-bold text-[#3d2817] line-clamp-2 min-h-14 group-hover:text-[#d4af37] transition-colors duration-300">
+                          {p.title}
+                        </h3>
+
+                        {p.shortDescription && (
+                          <p className="text-sm text-[#5d4433] mb-4 line-clamp-2 leading-relaxed">
+                            {p.shortDescription}
+                          </p>
+                        )}
+
+                        <div className="flex items-center justify-between pt-4 border-t border-[#d4b896]/30">
+                          <div>
+                            <div className="text-2xl font-bold text-[#3d2817] group-hover:text-[#d4af37] transition-colors duration-300">
+                              {formatPrice(p.price)}
+                            </div>
+                            <div className="text-xs text-[#5d4433] mt-1">
+                              / 3 ngày
+                            </div>
+                          </div>
+                          <motion.button
+                            whileHover={{ scale: 1.1 }}
+                            whileTap={{ scale: 0.9 }}
+                            className="bg-linear-to-r from-[#d4af37] to-[#b8941f] text-white px-5 py-2 rounded-full font-semibold shadow-lg hover:shadow-xl transition-all duration-300 flex items-center gap-1"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              navigate(`/product/${p._id}`);
+                            }}
+                          >
+                            Xem
+                            <ChevronRight className="w-4 h-4" />
+                          </motion.button>
+                        </div>
+                      </div>
+                    </motion.div>
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+            </motion.div>
+          )}
+
+          {/* View All Button */}
+          {!newLoading && !newError && newProducts.length > 0 && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.5 }}
+              className="text-center mt-12"
+            >
+              <motion.button
+                whileHover={{
+                  scale: 1.05,
+                  boxShadow: "0 10px 40px rgba(212, 175, 55, 0.3)",
+                }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => navigate(route.bst)}
+                className="bg-linear-to-r from-[#3d2817] to-[#5d4433] text-[#f5e6d3] px-10 py-4 rounded-full text-lg font-bold shadow-xl transition-all duration-300 inline-flex items-center gap-3 group"
+              >
+                <span>Xem Tất Cả Sản Phẩm</span>
+                <motion.div
+                  animate={{ x: [0, 5, 0] }}
+                  transition={{ duration: 1.5, repeat: Infinity }}
+                >
+                  <ChevronRight className="w-5 h-5" />
+                </motion.div>
+              </motion.button>
+            </motion.div>
+          )}
         </div>
       </section>
 
