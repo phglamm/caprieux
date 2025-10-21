@@ -26,13 +26,14 @@ export default function OrderFailedScreen() {
     const orderId = searchParams.get("orderId");
     const orderCode = searchParams.get("orderCode");
     const cancel = searchParams.get("cancel");
-
     const postWebhook = async () => {
       try {
         const requestData = {
           cancel,
           orderCode,
         };
+        console.log("Posting to webhook with data:", requestData);
+
         const response = await axios.post(
           "https://caprieux-be.onrender.com/api/payments/webhook",
           requestData
