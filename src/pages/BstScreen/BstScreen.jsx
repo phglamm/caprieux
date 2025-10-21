@@ -2,12 +2,15 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Star, Calendar, Package, Sparkles } from "lucide-react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { route } from "../../router";
 
 export default function BstScreen() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     let mounted = true;
@@ -48,7 +51,6 @@ export default function BstScreen() {
     return link;
   };
 
-  // Animation variants
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -224,7 +226,7 @@ export default function BstScreen() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setSelectedProduct(null)}
-            className="fixed inset-0 bg-black/80 flex items-center justify-center z-2000 p-4 overflow-y-auto"
+            className="fixed inset-0 bg-black/80 flex items-center justify-center z-2000 p-0 overflow-y-auto"
           >
             <motion.div
               initial={{ scale: 0.8, opacity: 0, y: 50 }}
@@ -248,7 +250,7 @@ export default function BstScreen() {
                 <img
                   src={imgSrc(selectedProduct.imageLink)}
                   alt={selectedProduct.title}
-                  className="w-full"
+                  className="w-full h-full object-cover"
                   onError={(e) => {
                     e.currentTarget.src = "/images/placeholder.png";
                   }}
@@ -421,6 +423,7 @@ export default function BstScreen() {
                       boxShadow: "0 10px 40px rgba(212, 175, 55, 0.4)",
                     }}
                     whileTap={{ scale: 0.95 }}
+                    onClick={() => navigate(`/payment/${selectedProduct._id}`)}
                     className="flex-1 py-5 rounded-full bg-linear-to-r from-[#d4af37] to-[#b8941f] text-white text-xl font-bold flex items-center justify-center gap-2 shadow-xl"
                   >
                     <Calendar className="w-6 h-6" />
