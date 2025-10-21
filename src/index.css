@@ -2,7 +2,7 @@
 
 /* Global typography: vintage, polished serif look */
 :root {
-  --brand-serif: "Playfair Display", serif;
+  --brand-serif: "Merriweather", serif;
 }
 
 body {
