@@ -231,23 +231,6 @@ export default function ProductDetailScreen() {
                 <motion.div
                   initial={{ x: -20, opacity: 0 }}
                   animate={{ x: 0, opacity: 1 }}
-                  transition={{ delay: 0.3 }}
-                  className="flex items-center gap-2 mb-6"
-                >
-                  <div className="flex gap-1">
-                    {[...Array(5)].map((_, i) => (
-                      <Star
-                        key={i}
-                        className="w-5 h-5 text-[#d4af37] fill-[#d4af37]"
-                      />
-                    ))}
-                  </div>
-                  <span className="text-[#5d4433]">5.0 (12 đánh giá)</span>
-                </motion.div>
-
-                <motion.div
-                  initial={{ x: -20, opacity: 0 }}
-                  animate={{ x: 0, opacity: 1 }}
                   transition={{ delay: 0.4 }}
                   className="text-4xl font-bold text-[#d4af37] mb-6"
                 >

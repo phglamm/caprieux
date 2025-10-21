@@ -1,7 +1,10 @@
 import { useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { route } from "../../router";
+import { useNavigate } from "react-router-dom";
+import { Search, X, Menu } from "lucide-react";
 import logo from "../../assets/logo.png";
+
 const navigationItems = [
   { name: "Trang Chủ", href: route.home },
   { name: "Chính Sách", href: route.policy },
@@ -9,117 +12,224 @@ const navigationItems = [
   { name: "Về Chúng Tôi", href: route.aboutUs },
   { name: "Liên Hệ", href: route.contact },
 ];
+
 const Header = ({ scrolled }) => {
   const [open, setOpen] = useState(false);
+  const [query, setQuery] = useState("");
+  const [isSearchExpanded, setIsSearchExpanded] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <motion.header
       className={`sticky top-0 z-50 transition-all duration-500 ${
         scrolled
-          ? "bg-[#3d2817]/98 shadow-2xl backdrop-blur-sm"
-          : "bg-linear-to-r from-[#3d2817] to-[#5d4433] shadow-lg"
+          ? "bg-[#3d2817]/95 shadow-2xl backdrop-blur-md border-b border-[#d4af37]/20"
+          : "bg-gradient-to-r from-[#3d2817] via-[#4a3520] to-[#5d4433] shadow-lg"
       }`}
     >
-      <div className="w-full px-6 lg:px-12 py-6">
-        <div className="flex justify-between items-center">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-20">
+          {/* Logo Section */}
           <motion.div
-            whileHover={{ scale: 1.05 }}
-            className="flex items-center text-xl lg:text-xl font-bold text-[#f5e6d3] tracking-[0.08em] cursor-pointer"
+            whileHover={{ scale: 1.02 }}
+            onClick={() => navigate(route.home)}
+            className="flex items-center gap-3 cursor-pointer group"
           >
-            <img
-              src={logo}
-              alt="The Caprieux"
-              className="h-10 lg:h-14 xl:h-16"
-            />
-            <span className="whitespace-nowrap uppercase text-4xl ">
-              The Caprieux
-            </span>
+            <div className="relative">
+              <img
+                src={logo}
+                alt="The Caprieux"
+                className="h-12 w-12 lg:h-14 lg:w-14 object-contain transition-transform duration-300 group-hover:rotate-6"
+              />
+              <div className="absolute inset-0 bg-[#d4af37]/20 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            </div>
+            <div className="flex flex-col">
+              <span className="text-[#f5e6d3] text-2xl lg:text-3xl font-bold tracking-wider uppercase">
+                The Caprieux
+              </span>
+            </div>
           </motion.div>
 
-          <nav className="flex gap-8 items-center">
-            <div className="hidden lg:flex gap-8">
+          {/* Desktop Navigation & Search */}
+          <div className="hidden lg:flex items-center gap-8">
+            {/* Navigation Links */}
+            <nav className="flex items-center gap-1">
               {navigationItems.map((item) => (
                 <motion.a
                   key={item.name}
-                  whileHover={{ scale: 1.1, color: "#d4af37" }}
                   href={item.href}
-                  className="text-[#f5e6d3] text-lg transition-all duration-300"
+                  whileHover={{ y: -2 }}
+                  className="relative px-4 py-2 text-[#f5e6d3] text-sm font-medium transition-colors duration-300 hover:text-[#d4af37] group"
                 >
                   {item.name}
+                  <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-gradient-to-r from-transparent via-[#d4af37] to-transparent group-hover:w-full transition-all duration-300" />
                 </motion.a>
               ))}
-            </div>
+            </nav>
 
-            {/* Mobile hamburger */}
-            <button
-              onClick={() => setOpen(true)}
-              className="lg:hidden p-2 rounded-md bg-[#3d2817]/40 text-[#f5e6d3]"
-              aria-label="Open menu"
+            {/* Search Bar */}
+            <motion.form
+              onSubmit={(e) => {
+                e.preventDefault();
+                const trimmed = (query || "").trim();
+                if (trimmed) {
+                  navigate(
+                    `${route.bst}?searchTerm=${encodeURIComponent(trimmed)}`
+                  );
+                } else {
+                  navigate(route.bst);
+                }
+              }}
+              onMouseEnter={() => setIsSearchExpanded(true)}
+              onMouseLeave={() => {
+                if (!query) setIsSearchExpanded(false);
+              }}
+              onFocus={() => setIsSearchExpanded(true)}
+              className="relative overflow-hidden"
+              aria-label="site search"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
+              <motion.div
+                animate={{
+                  width: isSearchExpanded ? "280px" : "48px",
+                }}
+                transition={{ duration: 0.3, ease: "easeInOut" }}
+                className="relative h-12"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M4 6h16M4 12h16M4 18h16"
+                <motion.div
+                  className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[white] pointer-events-none z-10"
+                  animate={{
+                    left: isSearchExpanded ? "16px" : "12px",
+                  }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <Search
+                    className={`w-5 h-5 ${
+                      isSearchExpanded ? " text-[#3d2817]" : "text-[white]"
+                    } `}
+                  />
+                </motion.div>
+                <motion.input
+                  type="text"
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  placeholder="Tìm kiếm sản phẩm..."
+                  className="w-full h-full pl-12 pr-4 rounded-full bg-[white] text-[#3d2817] placeholder-[#5d4433]/60 focus:outline-none focus:ring-2  shadow-xl text-sm"
+                  animate={{
+                    opacity: isSearchExpanded ? 1 : 0,
+                  }}
+                  transition={{ duration: 0.2 }}
                 />
-              </svg>
-            </button>
-          </nav>
+                {!isSearchExpanded && (
+                  <div className="absolute inset-0 rounded-full bg-transparent" />
+                )}
+              </motion.div>
+            </motion.form>
+          </div>
+
+          {/* Mobile Menu Button */}
+          <button
+            onClick={() => setOpen(true)}
+            className="lg:hidden p-2.5 rounded-lg bg-white/10 backdrop-blur-sm border border-[#d4af37]/30 text-[#f5e6d3] hover:bg-white/20 hover:border-[#d4af37]/60 transition-all duration-300"
+            aria-label="Open menu"
+          >
+            <Menu className="w-6 h-6" />
+          </button>
         </div>
       </div>
 
-      {/* Mobile menu overlay */}
-      {open && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          className="fixed inset-0 z-2000 bg-black/90 flex items-center justify-center p-6"
-        >
-          <div className="absolute top-6 right-6">
-            <button
+      {/* Mobile Menu */}
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 lg:hidden"
+          >
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="absolute inset-0 bg-black/80 backdrop-blur-sm"
               onClick={() => setOpen(false)}
-              className="p-3 rounded-full bg-white/10 text-white"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
-            </button>
-          </div>
+            />
 
-          <nav className="space-y-6 text-center">
-            {navigationItems.map((item) => (
-              <a
-                key={item.name}
-                href={item.href}
-                onClick={() => setOpen(false)}
-                className="block text-2xl text-white font-semibold"
-              >
-                {item.name}
-              </a>
-            ))}
-          </nav>
-        </motion.div>
-      )}
+            {/* Menu Panel */}
+            <motion.div
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "100%" }}
+              transition={{ type: "spring", damping: 25, stiffness: 200 }}
+              className="absolute right-0 top-0 h-full w-80 max-w-[85vw] bg-gradient-to-br from-[#3d2817] to-[#2a1a0f] shadow-2xl"
+            >
+              {/* Close Button */}
+              <div className="flex justify-between items-center p-6 border-b border-[#d4af37]/20">
+                <span className="text-[#d4af37] text-lg font-semibold tracking-wider">
+                  MENU
+                </span>
+                <button
+                  onClick={() => setOpen(false)}
+                  className="p-2 rounded-full bg-white/10 text-[#f5e6d3] hover:bg-white/20 transition-colors"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              {/* Mobile Search */}
+              <div className="p-6 border-b border-[#d4af37]/20">
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    const trimmed = (query || "").trim();
+                    if (trimmed) {
+                      navigate(
+                        `${route.bst}?searchTerm=${encodeURIComponent(trimmed)}`
+                      );
+                      setOpen(false);
+                    } else {
+                      navigate(route.bst);
+                      setOpen(false);
+                    }
+                  }}
+                  className="relative"
+                >
+                  <Search
+                    color="#d4af37"
+                    className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#d4af37] placeholder-[#d4af37]/60"
+                  />
+                  <input
+                    type="text"
+                    value={query}
+                    onChange={(e) => setQuery(e.target.value)}
+                    placeholder="Tìm kiếm sản phẩm..."
+                    className="w-full pl-12 pr-4 py-3 rounded-lg bg-white  backdrop-blur-sm border border-[#d4af37]/30 text-[#3d2817] placeholder-[#5d4433]/60 focus:outline-none focus:ring-2 focus:ring-[#d4af37]/20 transition-all text-sm"
+                  />
+                </form>
+              </div>
+
+              {/* Navigation Links */}
+              <nav className="p-6 space-y-2">
+                {navigationItems.map((item, index) => (
+                  <motion.a
+                    key={item.name}
+                    href={item.href}
+                    onClick={() => setOpen(false)}
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index * 0.1 }}
+                    className="block px-4 py-3 text-[#f5e6d3] text-lg font-medium rounded-lg hover:bg-white/10 hover:text-[#d4af37] transition-all duration-300 border border-transparent hover:border-[#d4af37]/30"
+                  >
+                    {item.name}
+                  </motion.a>
+                ))}
+              </nav>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.header>
   );
 };
+
 export default Header;

@@ -283,18 +283,13 @@ const HomeScreen = () => {
             whileInView="visible"
             viewport={{ once: true, margin: "-100px" }}
             variants={containerVariants}
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
           >
             {[
               {
                 icon: <Award className="w-12 h-12" />,
-                title: "Chất Lượng Designer",
+                title: "Chất Lượng Cao Cấp",
                 desc: "Bộ sưu tập được tuyển chọn từ các thương hiệu cao cấp",
-              },
-              {
-                icon: <Shield className="w-12 h-12" />,
-                title: "Bảo Hiểm Toàn Diện",
-                desc: "Mọi đơn thuê đều được bảo hiểm hư hỏng và mất mát",
               },
               {
                 icon: <Package className="w-12 h-12" />,
@@ -556,25 +551,25 @@ const HomeScreen = () => {
             {[
               {
                 step: "01",
-                title: "Duyệt & Chọn",
+                title: "Chọn Sản Phẩm",
                 desc: "Chọn từ bộ sưu tập được tuyển chọn",
                 icon: <Search className="w-10 h-10" />,
               },
               {
                 step: "02",
-                title: "Đặt Ngày",
+                title: "Đặt Lịch & Thanh Toán",
                 desc: "Chọn thời gian thuê trên lịch",
                 icon: <Calendar className="w-10 h-10" />,
               },
               {
                 step: "03",
-                title: "Nhận & Mặc",
+                title: "Nhận Đồ",
                 desc: "Giao hàng tận nơi cho bạn",
                 icon: <Package className="w-10 h-10" />,
               },
               {
                 step: "04",
-                title: "Trả Dễ Dàng",
+                title: "Sử Dụng & Trả Đồ",
                 desc: "Trả tại cửa hàng hoặc đặt lịch lấy",
                 icon: <CheckCircle className="w-10 h-10" />,
               },
@@ -591,13 +586,13 @@ const HomeScreen = () => {
                 >
                   {item.icon}
                 </motion.div>
-                <motion.div
+                {/* <motion.div
                   initial={{ opacity: 0.2 }}
                   whileHover={{ opacity: 0.4, scale: 1.1 }}
                   className="absolute top-2 right-[20%] text-6xl font-bold text-[#d4af37] opacity-20"
                 >
                   {item.step}
-                </motion.div>
+                </motion.div> */}
                 <h3 className="text-2xl mb-3 text-[#3d2817] font-bold group-hover:text-[#d4af37] transition-colors duration-300">
                   {item.title}
                 </h3>

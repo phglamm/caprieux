@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { Star, Calendar, Package, Sparkles, Search } from "lucide-react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 export default function BstScreen() {
   const [products, setProducts] = useState([]);
@@ -12,6 +13,14 @@ export default function BstScreen() {
   const [searchLoading, setSearchLoading] = useState(false);
   const [searchError, setSearchError] = useState(null);
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // read searchTerm from query string (set by Header form)
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const term = params.get("searchTerm") || "";
+    setSearchQuery(term);
+  }, [location.search]);
 
   useEffect(() => {
     let mounted = true;
@@ -59,31 +68,36 @@ export default function BstScreen() {
   // products will be populated by initial fetch or API search
   // (removed client-side title filtering to rely on backend search)
 
-  // Debounced API search: call backend when searchQuery changes
-  // Remove debounce: only perform search when the user submits the form (press Enter)
-
-  const handleSearchSubmit = async (e) => {
-    e.preventDefault();
-    // if search is empty, reload initial products
-    setLoading(true);
-    setSearchError(null);
-    setSearchLoading(true);
-    setProducts([]);
-    try {
-      const url = searchQuery
-        ? `https://caprieux-be.onrender.com/api/products?searchTerm=${encodeURIComponent(
-            searchQuery
-          )}`
-        : "https://caprieux-be.onrender.com/api/products";
-      const resp = await axios.get(url);
-      setProducts(resp.data || []);
-    } catch (err) {
-      setSearchError(err.message || "Search failed");
-    } finally {
-      setSearchLoading(false);
-      setLoading(false);
-    }
-  };
+  // perform API search whenever searchQuery changes (set from header via query param)
+  useEffect(() => {
+    let mounted = true;
+    const doSearch = async () => {
+      setSearchLoading(true);
+      setSearchError(null);
+      setLoading(true);
+      try {
+        const url = searchQuery
+          ? `https://caprieux-be.onrender.com/api/products?searchTerm=${encodeURIComponent(
+              searchQuery
+            )}`
+          : "https://caprieux-be.onrender.com/api/products";
+        const resp = await axios.get(url);
+        if (mounted) setProducts(resp.data || []);
+      } catch (err) {
+        if (mounted) setSearchError(err.message || "Search failed");
+      } finally {
+        if (mounted) {
+          setSearchLoading(false);
+          setLoading(false);
+        }
+      }
+    };
+    // trigger search on mount and when term changes
+    doSearch();
+    return () => {
+      mounted = false;
+    };
+  }, [searchQuery]);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -161,19 +175,7 @@ export default function BstScreen() {
             Khám phá những trang phục cao cấp, được tuyển chọn kỹ lưỡng
           </motion.p>
 
-          {/* Search Bar */}
-          <motion.div variants={itemVariants} className="max-w-2xl mx-auto">
-            <form onSubmit={handleSearchSubmit} className="relative">
-              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-[#5d4433]" />
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Tìm kiếm sản phẩm... (Nhấn Enter để tìm)"
-                className="w-full pl-12 pr-4 py-4 rounded-full bg-white text-[#3d2817] placeholder-[#5d4433]/60 focus:outline-none focus:ring-2 focus:ring-[#d4af37] shadow-xl text-lg"
-              />
-            </form>
-          </motion.div>
+          {/* Search is in the Header; BstScreen reads ?searchTerm= from the URL and performs the fetch */}
         </motion.div>
       </section>
 

@@ -138,7 +138,6 @@ export default function PolicyScreen() {
         "Ưu tiên đặt hàng trước",
         "Miễn phí giao hàng không giới hạn",
         "Tích điểm đổi quà hấp dẫn",
-        "Phí hội viên: 299k/tháng hoặc 2.999k/năm",
       ],
       highlight: true,
     },
@@ -148,7 +147,7 @@ export default function PolicyScreen() {
       description: "Bảo đảm cho cả hai bên",
       details: [
         "Đặt cọc 50% giá trị (sản phẩm <5 triệu)",
-        "Đặt cọc 100% giá trị (sản phẩm ≥5 triệu)",
+        "Đặt cọc 70% giá trị (sản phẩm ≥5 triệu)",
         "Hoàn cọc 100% nếu trả đúng hạn, không hư hỏng",
         "Hoàn qua tài khoản trong 3-5 ngày làm việc",
       ],
@@ -174,7 +173,6 @@ export default function PolicyScreen() {
       bgColor: "bg-orange-50",
       examples: "Rách lớn, vết bẩn không tẩy được, hỏng cấu trúc",
       penalty: "Giữ lại 50-100% tiền cọc",
-      coverage: "Cần mua bảo hiểm cao cấp để bảo vệ",
     },
     {
       icon: <Package className="w-8 h-8" />,
@@ -182,8 +180,7 @@ export default function PolicyScreen() {
       color: "text-red-600",
       bgColor: "bg-red-50",
       examples: "Mất toàn bộ hoặc một phần sản phẩm/phụ kiện",
-      penalty: "Bồi thường 100-150% giá trị sản phẩm",
-      coverage: "Báo cảnh sát và liên hệ bảo hiểm nếu có",
+      penalty: "Bồi thường 70-100% giá trị sản phẩm",
     },
     {
       icon: <Clock className="w-8 h-8" />,
@@ -192,7 +189,6 @@ export default function PolicyScreen() {
       bgColor: "bg-purple-50",
       examples: "Trả muộn hơn ngày đã đặt",
       penalty: "Phạt 30% giá thuê/ngày + giữ cọc nếu quá 7 ngày",
-      coverage: "Liên hệ trước 24h để gia hạn (phí 20%/ngày)",
     },
   ];
 
@@ -254,7 +250,6 @@ export default function PolicyScreen() {
         "Tuân thủ GDPR và luật bảo vệ dữ liệu Việt Nam",
         "Không chia sẻ thông tin cho bên thứ ba",
         "Khách hàng có quyền xóa dữ liệu bất kỳ lúc nào",
-        "Lưu trữ dữ liệu trên server an toàn tại Singapore",
       ],
     },
     {
@@ -266,70 +261,6 @@ export default function PolicyScreen() {
         "Quy định rõ về quyền lợi và nghĩa vụ",
         "Giải quyết tranh chấp theo pháp luật VN",
         "Hỗ trợ khách hàng 24/7 qua hotline/chat",
-      ],
-    },
-  ];
-
-  // Product detail requirements
-  const productDetailRequirements = [
-    {
-      category: "Thông Tin Cơ Bản",
-      icon: <Info className="w-6 h-6" />,
-      items: [
-        "Tên sản phẩm và thương hiệu",
-        "Giá thuê theo thời gian (3 ngày, 7 ngày, 14 ngày)",
-        "Tình trạng sẵn có và lịch đặt",
-        "Mã sản phẩm và danh mục",
-      ],
-    },
-    {
-      category: "Kích Thước",
-      icon: <TrendingUp className="w-6 h-6" />,
-      items: [
-        "Bảng size chi tiết (S, M, L, XL)",
-        "Số đo cụ thể: Vai, Ngực, Eo, Hông, Dài áo/váy",
-        "Hướng dẫn chọn size phù hợp",
-        "Thông tin về độ co giãn của vải",
-      ],
-    },
-    {
-      category: "Chất Liệu & Chăm Sóc",
-      icon: <Sparkles className="w-6 h-6" />,
-      items: [
-        "Thành phần vải chi tiết (%, xuất xứ)",
-        "Đặc tính: Co giãn, thấm hút, thoáng khí",
-        "Hướng dẫn bảo quản và giặt giũ",
-        "Lưu ý tránh các tác nhân gây hại",
-      ],
-    },
-    {
-      category: "Mô Tả Chi Tiết",
-      icon: <FileText className="w-6 h-6" />,
-      items: [
-        "Mô tả thiết kế, màu sắc, họa tiết",
-        "Phong cách và dịp phù hợp",
-        "Điểm đặc biệt/nhược điểm nhỏ (nếu có)",
-        "Lịch sử sản phẩm (nếu là vintage)",
-      ],
-    },
-    {
-      category: "Hướng Dẫn Sử Dụng",
-      icon: <CheckCircle className="w-6 h-6" />,
-      items: [
-        "Cách mặc đúng cách",
-        "Cách phối đồ gợi ý",
-        "Lưu ý khi sử dụng (tránh móc, kéo)",
-        "Hướng dẫn bảo quản trong thời gian thuê",
-      ],
-    },
-    {
-      category: "Phụ Kiện Đi Kèm",
-      icon: <Package className="w-6 h-6" />,
-      items: [
-        "Danh sách phụ kiện kèm theo",
-        "Hình ảnh phụ kiện chi tiết",
-        "Giá trị phụ kiện (nếu mất)",
-        "Hướng dẫn sử dụng phụ kiện",
       ],
     },
   ];
@@ -364,9 +295,9 @@ export default function PolicyScreen() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#f5e6d3] to-[#d4b896]">
+    <div className="min-h-screen bg-linear-to-br from-[#f5e6d3] to-[#d4b896]">
       {/* Hero Section */}
-      <section className="relative w-full bg-gradient-to-br from-[#3d2817] via-[#5d4433] to-[#3d2817] py-24 lg:py-32 text-center text-[#f5e6d3] overflow-hidden">
+      <section className="relative w-full bg-linear-to-br from-[#3d2817] via-[#5d4433] to-[#3d2817] py-24 lg:py-32 text-center text-[#f5e6d3] overflow-hidden">
         <div
           className="absolute inset-0 opacity-10"
           style={{
@@ -491,15 +422,10 @@ export default function PolicyScreen() {
                 whileHover={{ scale: 1.05, y: -10 }}
                 className="bg-white rounded-3xl p-8 shadow-xl cursor-pointer group relative overflow-hidden"
               >
-                {/* Step number background */}
-                <div className="absolute top-4 right-4 text-6xl font-bold text-[#d4af37] opacity-10">
-                  {step.step}
-                </div>
-
                 <motion.div
                   whileHover={{ scale: 1.1, rotate: 360 }}
                   transition={{ duration: 0.6 }}
-                  className="relative z-10 bg-gradient-to-br from-[#3d2817] to-[#5d4433] text-[#f5e6d3] w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 shadow-xl"
+                  className="relative z-10 bg-linear-to-br from-[#3d2817] to-[#5d4433] text-[#f5e6d3] w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 shadow-xl"
                 >
                   {step.icon}
                 </motion.div>
@@ -521,73 +447,8 @@ export default function PolicyScreen() {
                       transition={{ delay: i * 0.1 }}
                       className="flex items-start gap-2 text-sm text-[#5d4433]"
                     >
-                      <CheckCircle className="w-4 h-4 text-[#d4af37] flex-shrink-0 mt-0.5" />
+                      <CheckCircle className="w-4 h-4 text-[#d4af37] shrink-0 mt-0.5" />
                       <span>{detail}</span>
-                    </motion.li>
-                  ))}
-                </ul>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Product Detail Requirements */}
-      <section className="w-full bg-gradient-to-b from-[#e8dcc8] to-[#d4b896] py-20 lg:py-28 px-6 lg:px-12">
-        <div className="max-w-7xl mx-auto">
-          <motion.h2
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="text-4xl lg:text-5xl text-center mb-6 text-[#3d2817] font-bold"
-          >
-            Chi Tiết Sản Phẩm Đầy Đủ
-          </motion.h2>
-          <motion.p
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            className="text-center text-[#5d4433] text-lg mb-16 max-w-3xl mx-auto"
-          >
-            Mọi thông tin về sản phẩm được mô tả rõ ràng, minh bạch - kể cả
-            những lỗi nhỏ nhất
-          </motion.p>
-
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={containerVariants}
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-          >
-            {productDetailRequirements.map((requirement, idx) => (
-              <motion.div
-                key={idx}
-                variants={scaleVariants}
-                whileHover={{ scale: 1.05 }}
-                className="bg-white rounded-3xl p-8 shadow-xl"
-              >
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="bg-[#d4af37] text-white p-3 rounded-xl">
-                    {requirement.icon}
-                  </div>
-                  <h3 className="text-xl font-bold text-[#3d2817]">
-                    {requirement.category}
-                  </h3>
-                </div>
-                <ul className="space-y-3">
-                  {requirement.items.map((item, i) => (
-                    <motion.li
-                      key={i}
-                      initial={{ x: -10, opacity: 0 }}
-                      whileInView={{ x: 0, opacity: 1 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: i * 0.1 }}
-                      className="flex items-start gap-2 text-[#5d4433]"
-                    >
-                      <Sparkles className="w-4 h-4 text-[#d4af37] flex-shrink-0 mt-1" />
-                      <span>{item}</span>
                     </motion.li>
                   ))}
                 </ul>
@@ -635,7 +496,7 @@ export default function PolicyScreen() {
                 whileHover={{ scale: 1.05, y: -10 }}
                 className={`rounded-3xl p-8 shadow-2xl relative overflow-hidden ${
                   policy.highlight
-                    ? "bg-gradient-to-br from-[#d4af37] to-[#b8941f] text-white"
+                    ? "bg-linear-to-br from-[#d4af37] to-[#b8941f] text-white"
                     : "bg-white"
                 }`}
               >
@@ -690,7 +551,7 @@ export default function PolicyScreen() {
                         className="flex items-start gap-2"
                       >
                         <CheckCircle
-                          className={`w-5 h-5 flex-shrink-0 mt-0.5 ${
+                          className={`w-5 h-5 shrink-0 mt-0.5 ${
                             policy.highlight ? "text-white" : "text-[#d4af37]"
                           }`}
                         />
@@ -714,7 +575,7 @@ export default function PolicyScreen() {
       {/* Penalty Policy Section */}
       <section
         id="penalty"
-        className="w-full bg-gradient-to-b from-[#e8dcc8] to-[#d4b896] py-20 lg:py-28 px-6 lg:px-12"
+        className="w-full bg-linear-to-b from-[#e8dcc8] to-[#d4b896] py-20 lg:py-28 px-6 lg:px-12"
       >
         <div className="max-w-7xl mx-auto">
           <motion.h2
@@ -759,9 +620,7 @@ export default function PolicyScreen() {
                   </motion.div>
                   <div className="flex-1">
                     <h3 className="text-2xl font-bold mb-2">{policy.title}</h3>
-                    <p className="text-gray-700 italic">
-                      Ví dụ: {policy.examples}
-                    </p>
+                    <p className="text-gray-700 italic">{policy.examples}</p>
                   </div>
                 </div>
 
@@ -775,40 +634,9 @@ export default function PolicyScreen() {
                       {policy.penalty}
                     </p>
                   </div>
-
-                  <div className="bg-white/70 rounded-xl p-4">
-                    <div className="flex items-center gap-2 mb-2">
-                      <ShieldCheck className="w-5 h-5" />
-                      <span className="font-bold text-gray-800">Bảo hiểm:</span>
-                    </div>
-                    <p className="text-gray-800">{policy.coverage}</p>
-                  </div>
                 </div>
               </motion.div>
             ))}
-          </motion.div>
-
-          {/* Insurance CTA */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="mt-12 bg-gradient-to-r from-[#3d2817] to-[#5d4433] rounded-3xl p-10 text-center text-white"
-          >
-            <h3 className="text-3xl font-bold mb-4">
-              Bảo Vệ An Tâm Với Bảo Hiểm
-            </h3>
-            <p className="text-lg mb-6 text-[#f5e6d3]">
-              Chỉ với +10% giá thuê, bạn được bảo vệ toàn diện cho mọi hư hỏng
-              ngoài ý muốn
-            </p>
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="bg-[#d4af37] text-[#3d2817] px-8 py-4 rounded-full font-bold text-lg shadow-xl hover:shadow-2xl transition-all"
-            >
-              Tìm Hiểu Thêm Về Bảo Hiểm
-            </motion.button>
           </motion.div>
         </div>
       </section>
@@ -854,7 +682,7 @@ export default function PolicyScreen() {
                 <motion.div
                   whileHover={{ scale: 1.1, rotate: 360 }}
                   transition={{ duration: 0.6 }}
-                  className="bg-gradient-to-br from-[#d4af37] to-[#b8941f] text-white w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-xl"
+                  className="bg-linear-to-br from-[#d4af37] to-[#b8941f] text-white w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-xl"
                 >
                   {process.icon}
                 </motion.div>
@@ -876,7 +704,7 @@ export default function PolicyScreen() {
                       transition={{ delay: i * 0.1 }}
                       className="flex items-start gap-2 text-[#5d4433]"
                     >
-                      <CheckCircle className="w-5 h-5 text-[#d4af37] flex-shrink-0 mt-0.5" />
+                      <CheckCircle className="w-5 h-5 text-[#d4af37] shrink-0 mt-0.5" />
                       <span>{point}</span>
                     </motion.li>
                   ))}
@@ -890,7 +718,7 @@ export default function PolicyScreen() {
       {/* Security & Privacy Section */}
       <section
         id="security"
-        className="w-full bg-gradient-to-br from-[#3d2817] via-[#5d4433] to-[#3d2817] text-[#f5e6d3] py-20 lg:py-28 px-6 lg:px-12"
+        className="w-full bg-linear-to-br from-[#3d2817] via-[#5d4433] to-[#3d2817] text-[#f5e6d3] py-20 lg:py-28 px-6 lg:px-12"
       >
         <div className="max-w-7xl mx-auto">
           <motion.h2
@@ -951,7 +779,7 @@ export default function PolicyScreen() {
                       transition={{ delay: i * 0.1 }}
                       className="flex items-start gap-2"
                     >
-                      <ShieldCheck className="w-5 h-5 text-[#d4af37] flex-shrink-0 mt-0.5" />
+                      <ShieldCheck className="w-5 h-5 text-[#d4af37] shrink-0 mt-0.5" />
                       <span className="text-[#f5e6d3]/90">{item}</span>
                     </motion.li>
                   ))}
@@ -1031,7 +859,7 @@ export default function PolicyScreen() {
                     animate={{ rotate: expandedFAQ === idx ? 180 : 0 }}
                     transition={{ duration: 0.3 }}
                   >
-                    <ChevronDown className="w-6 h-6 text-[#d4af37] flex-shrink-0" />
+                    <ChevronDown className="w-6 h-6 text-[#d4af37] shrink-0" />
                   </motion.div>
                 </motion.button>
 
@@ -1057,7 +885,7 @@ export default function PolicyScreen() {
       </section>
 
       {/* CTA Section */}
-      <section className="w-full bg-gradient-to-br from-[#3d2817] via-[#5d4433] to-[#3d2817] py-20 lg:py-28 px-6 lg:px-12 text-center text-white">
+      <section className="w-full bg-linear-to-br from-[#3d2817] via-[#5d4433] to-[#3d2817] py-20 lg:py-28 px-6 lg:px-12 text-center text-white">
         <motion.div
           initial="hidden"
           whileInView="visible"
