@@ -1,10 +1,15 @@
 import { motion } from "framer-motion";
+import { route } from "../../router";
 
+const navigationItems = [
+  { name: "Trang Chủ", href: route.home },
+  { name: "Chính Sách", href: route.policy },
+  { name: "Bộ Sưu Tập", href: route.bst },
+  { name: "Về Chúng Tôi", href: route.aboutUs },
+  { name: "Liên Hệ", href: route.contact },
+];
 const Header = ({ scrolled }) => (
   <motion.header
-    initial={{ y: -100 }}
-    animate={{ y: 0 }}
-    transition={{ duration: 0.6, ease: "easeOut" }}
     className={`sticky top-0 z-50 transition-all duration-500 ${
       scrolled
         ? "bg-[#3d2817]/98 shadow-2xl backdrop-blur-sm"
@@ -21,20 +26,14 @@ const Header = ({ scrolled }) => (
         </motion.div>
         <nav className="flex gap-8 items-center">
           <div className="hidden lg:flex gap-8">
-            {[
-              "Trang Chủ",
-              "Bộ Sưu Tập",
-              "Cách Thuê",
-              "Về Chúng Tôi",
-              "Liên Hệ",
-            ].map((item) => (
+            {navigationItems.map((item) => (
               <motion.a
-                key={item}
+                key={item.name}
                 whileHover={{ scale: 1.1, color: "#d4af37" }}
-                href={`#${item.toLowerCase().replace(/\s+/g, "-")}`}
+                href={item.href}
                 className="text-[#f5e6d3] text-lg transition-all duration-300"
               >
-                {item}
+                {item.name}
               </motion.a>
             ))}
           </div>
