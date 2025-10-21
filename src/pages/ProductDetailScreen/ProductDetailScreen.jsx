@@ -202,7 +202,7 @@ export default function ProductDetailScreen() {
             {/* Product Image */}
             <motion.div variants={itemVariants}>
               <div className="bg-white rounded-3xl shadow-2xl overflow-hidden sticky top-6">
-                <div className="bg-linear-to-br from-[#f5e6d3] to-[#d4b896] w-full h-[600px] flex items-center justify-center">
+                <div className="bg-linear-to-br from-[#f5e6d3] to-[#d4b896] w-full h-[700px] flex items-center justify-center">
                   <img
                     src={imgSrc(product.imageLink)}
                     alt={product.title}
@@ -393,7 +393,7 @@ export default function ProductDetailScreen() {
               )}
 
               {/* Rental Terms */}
-              <motion.div
+              {/* <motion.div
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.7 }}
@@ -425,7 +425,7 @@ export default function ProductDetailScreen() {
                     <span>Hỗ trợ đổi size miễn phí trước ngày thuê</span>
                   </li>
                 </ul>
-              </motion.div>
+              </motion.div> */}
             </motion.div>
           </div>
         </motion.div>
