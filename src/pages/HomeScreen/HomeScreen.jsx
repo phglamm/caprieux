@@ -14,73 +14,13 @@ import {
   Heart,
   Search,
 } from "lucide-react";
+import videoBanner from "../../assets/videobanner1.mp4";
+import posterImage from "../../assets/react.svg";
+import { route } from "../../router";
+import { useNavigate } from "react-router-dom";
 const HomeScreen = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
-
-  // Sample Products Data
-  const products = [
-    {
-      id: 1,
-      name: "Váy Đen Thanh Lịch",
-      price: 150000,
-      image: "👗",
-      category: "Váy",
-      available: true,
-      rating: 4.8,
-      reviews: 24,
-    },
-    {
-      id: 2,
-      name: "Váy Ren Vintage",
-      price: 180000,
-      image: "👗",
-      category: "Váy",
-      available: true,
-      rating: 4.9,
-      reviews: 31,
-    },
-    {
-      id: 3,
-      name: "Váy Mini Dự Tiệc",
-      price: 120000,
-      image: "👗",
-      category: "Váy",
-      available: false,
-      rating: 4.7,
-      reviews: 18,
-    },
-    {
-      id: 4,
-      name: "Set Blazer Cổ Điển",
-      price: 200000,
-      image: "🧥",
-      category: "Bộ",
-      available: true,
-      rating: 5.0,
-      reviews: 12,
-    },
-    {
-      id: 5,
-      name: "Váy Hoa Mùa Hè",
-      price: 140000,
-      image: "👗",
-      category: "Váy",
-      available: true,
-      rating: 4.6,
-      reviews: 28,
-    },
-    {
-      id: 6,
-      name: "Váy Dạ Hội Sang Trọng",
-      price: 250000,
-      image: "👗",
-      category: "Váy Dạ Hội",
-      available: true,
-      rating: 4.9,
-      reviews: 15,
-    },
-  ];
-
+  const navigate = useNavigate();
   const testimonials = [
     {
       id: 1,
@@ -146,11 +86,26 @@ const HomeScreen = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#f5e6d3] to-[#d4b896]">
+    <div className="min-h-screen bg-linear-to-br from-[#f5e6d3] to-[#d4b896]">
       {/* Hero Section */}
-      <section className="relative w-full bg-gradient-to-br from-[#3d2817] via-[#5d4433] to-[#3d2817] py-24 lg:py-32 text-center text-[#f5e6d3] overflow-hidden">
+      <section className="relative w-full bg-linear-to-br from-[#3d2817] via-[#5d4433] to-[#3d2817] py-40 lg:py-56 text-center text-[#f5e6d3] overflow-hidden min-h-[80vh] lg:min-h-[95vh] flex items-center justify-center">
+        {/* Background video (show on sm+). Keep full-bleed and cover the hero */}
+        <video
+          className="hidden sm:block absolute inset-0 w-full h-full object-cover z-0"
+          src={videoBanner}
+          // poster={posterImage}
+          autoPlay
+          muted
+          loop
+          playsInline
+          aria-hidden="true"
+        />
+
+        {/* dark overlay to keep text readable */}
+        <div className="absolute inset-0 bg-black/45 z-10"></div>
+
         <div
-          className="absolute inset-0 opacity-10"
+          className="absolute inset-0 opacity-10 z-20"
           style={{
             backgroundImage:
               "radial-gradient(circle, #f5e6d3 1px, transparent 1px)",
@@ -159,53 +114,22 @@ const HomeScreen = () => {
         ></div>
 
         {/* Floating sparkles */}
-        <motion.div
-          animate={{ y: [-20, 0, -20] }}
-          transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-20 left-[10%]"
-        >
-          <Sparkles className="w-8 h-8 text-[#d4af37] opacity-60" />
-        </motion.div>
-        <motion.div
-          animate={{ y: [0, -20, 0] }}
-          transition={{
-            duration: 4,
-            repeat: Infinity,
-            ease: "easeInOut",
-            delay: 1,
-          }}
-          className="absolute top-40 right-[15%]"
-        >
-          <Sparkles className="w-6 h-6 text-[#d4af37] opacity-40" />
-        </motion.div>
-        <motion.div
-          animate={{ y: [-10, 10, -10] }}
-          transition={{
-            duration: 3.5,
-            repeat: Infinity,
-            ease: "easeInOut",
-            delay: 0.5,
-          }}
-          className="absolute bottom-20 left-[20%]"
-        >
-          <Sparkles className="w-10 h-10 text-[#d4af37] opacity-50" />
-        </motion.div>
 
         <motion.div
           initial="hidden"
           animate="visible"
           variants={containerVariants}
-          className="relative z-10 px-6 lg:px-12 max-w-7xl mx-auto"
+          className="relative z-30 px-6 lg:px-12 max-w-7xl mx-auto flex flex-col items-center justify-center text-center"
         >
           <motion.h1
             variants={itemVariants}
             className="text-5xl lg:text-7xl font-bold mb-6 drop-shadow-lg"
           >
-            Thời Trang Xa Xỉ, Cho Thuê
+            The Caprieux
           </motion.h1>
           <motion.p
             variants={itemVariants}
-            className="text-xl lg:text-2xl mb-10 opacity-95 leading-relaxed max-w-4xl mx-auto"
+            className="text-xl lg:text-2xl mb-10 opacity-95 leading-relaxed max-w-4xl"
           >
             Trải nghiệm trang phục designer cao cấp không giới hạn. Thuê. Mặc.
             Lặp Lại.
@@ -219,8 +143,9 @@ const HomeScreen = () => {
                 scale: 1.1,
                 boxShadow: "0 20px 40px rgba(212, 175, 55, 0.5)",
               }}
+              onClick={() => navigate(route.bst)}
               whileTap={{ scale: 0.95 }}
-              className="bg-[#d4af37] text-[#3d2817] px-12 py-4 rounded-full text-lg font-bold shadow-lg transition-all duration-300 flex items-center gap-2"
+              className="bg-[#d4af37] text-[#3d2817] px-12 py-4 rounded-full text-lg font-bold shadow-lg transition-all duration-300 flex items-center gap-2 hover:cursor-pointer"
             >
               <span>Xem Bộ Sưu Tập</span>
               <ChevronRight className="w-5 h-5" />
@@ -285,7 +210,7 @@ const HomeScreen = () => {
                 key={idx}
                 variants={scaleVariants}
                 whileHover={{ scale: 1.05, y: -10 }}
-                className="bg-gradient-to-br from-white to-[#f9f3e8] p-10 rounded-3xl text-center shadow-xl cursor-pointer group"
+                className="bg-linear-to-br from-white to-[#f9f3e8] p-10 rounded-3xl text-center shadow-xl cursor-pointer group"
               >
                 <motion.div
                   whileHover={{ rotate: 360 }}
@@ -357,7 +282,7 @@ const HomeScreen = () => {
                 <motion.div
                   whileHover={{ scale: 1.1, rotate: 360 }}
                   transition={{ duration: 0.6 }}
-                  className="bg-gradient-to-br from-[#3d2817] to-[#5d4433] text-[#f5e6d3] w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 shadow-xl"
+                  className="bg-linear-to-br from-[#3d2817] to-[#5d4433] text-[#f5e6d3] w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 shadow-xl"
                 >
                   {item.icon}
                 </motion.div>
@@ -379,7 +304,7 @@ const HomeScreen = () => {
       </section>
 
       {/* Testimonials */}
-      <section className="w-full bg-gradient-to-br from-[#3d2817] via-[#5d4433] to-[#3d2817] text-[#f5e6d3] py-20 lg:py-28 px-6 lg:px-12">
+      <section className="w-full bg-linear-to-br from-[#3d2817] via-[#5d4433] to-[#3d2817] text-[#f5e6d3] py-20 lg:py-28 px-6 lg:px-12">
         <div className="max-w-6xl mx-auto text-center">
           <motion.h2
             initial={{ opacity: 0, y: 50 }}
@@ -455,7 +380,7 @@ const HomeScreen = () => {
               boxShadow: "0 20px 60px rgba(212, 175, 55, 0.4)",
             }}
             whileTap={{ scale: 0.95 }}
-            className="bg-gradient-to-r from-[#d4af37] to-[#b8941f] text-[#3d2817] px-12 py-5 rounded-full text-xl font-bold shadow-xl transition-all duration-300"
+            className="bg-linear-to-r from-[#d4af37] to-[#b8941f] text-[#3d2817] px-12 py-5 rounded-full text-xl font-bold shadow-xl transition-all duration-300"
           >
             Khám Phá Bộ Sưu Tập
           </motion.button>
@@ -470,7 +395,7 @@ const HomeScreen = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setSelectedProduct(null)}
-            className="fixed inset-0 bg-black/80 flex items-center justify-center z-[2000] p-8"
+            className="fixed inset-0 bg-black/80 flex items-center justify-center z-2000 p-8"
           >
             <motion.div
               initial={{ scale: 0.8, opacity: 0, y: 50 }}
@@ -492,7 +417,7 @@ const HomeScreen = () => {
                 initial={{ scale: 1.2 }}
                 animate={{ scale: 1 }}
                 transition={{ duration: 0.5 }}
-                className="bg-gradient-to-br from-[#f5e6d3] to-[#d4b896] h-96 flex items-center justify-center text-[12rem] rounded-t-3xl overflow-hidden"
+                className="bg-linear-to-br from-[#f5e6d3] to-[#d4b896] h-96 flex items-center justify-center text-[12rem] rounded-t-3xl overflow-hidden"
               >
                 <motion.div
                   animate={{ rotate: [0, 5, -5, 0] }}
@@ -576,7 +501,7 @@ const HomeScreen = () => {
                   whileTap={{ scale: selectedProduct.available ? 0.95 : 1 }}
                   className={`w-full py-5 rounded-full text-xl font-bold flex items-center justify-center gap-2 transition-all ${
                     selectedProduct.available
-                      ? "bg-gradient-to-r from-[#d4af37] to-[#b8941f] text-white"
+                      ? "bg-linear-to-r from-[#d4af37] to-[#b8941f] text-white"
                       : "bg-gray-400 text-gray-700 cursor-not-allowed"
                   }`}
                   disabled={!selectedProduct.available}
