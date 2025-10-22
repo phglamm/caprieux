@@ -278,11 +278,6 @@ export default function PolicyScreen() {
         "Có, bạn có thể đổi size trong vòng 4h sau khi nhận hàng (nếu còn hàng). Chúng tôi sẽ giao size mới và lấy lại sản phẩm cũ miễn phí.",
     },
     {
-      question: "Tôi có cần mua bảo hiểm không?",
-      answer:
-        "Bảo hiểm cơ bản đã bao gồm trong giá thuê (hư hỏng nhẹ). Với sản phẩm cao cấp, chúng tôi khuyến khích mua bảo hiểm cao cấp (+10% giá thuê).",
-    },
-    {
       question: "Tôi có thể hủy đơn hàng không?",
       answer:
         "Có thể hủy miễn phí trước 48h. Hủy trong vòng 24-48h sẽ mất 30% phí. Hủy trong vòng 24h sẽ mất 50% phí đặt cọc.",
