@@ -11,27 +11,18 @@ import {
 
 const nav = [
   {
-    name: "Dashboard",
-    to: "/admin",
-    icon: <Home className="w-5 h-5" />,
-  },
-  {
-    name: "Products",
+    name: "Sản phẩm",
     to: "/admin/products",
     icon: <Box className="w-5 h-5" />,
   },
   {
-    name: "Orders",
+    name: "Đơn hàng",
     to: "/admin/orders",
     icon: <FileText className="w-5 h-5" />,
   },
+
   {
-    name: "Users",
-    to: "/admin/users",
-    icon: <Users className="w-5 h-5" />,
-  },
-  {
-    name: "Settings",
+    name: "Cài đặt",
     to: "/admin/settings",
     icon: <Settings className="w-5 h-5" />,
   },
@@ -50,7 +41,7 @@ export default function AdminSidebar({ open, onClose }) {
 
       {/* Sidebar */}
       <aside
-        className={`fixed lg:sticky top-0 left-0 h-screen w-64 bg-white border-r border-gray-200 z-50 overflow-y-auto transition-transform duration-300 ${
+        className={`sticky lg:sticky top-0 left-0 h-screen w-64 bg-white border-r border-gray-200 z-50 overflow-y-auto transition-transform duration-300 ${
           open ? "translate-x-0" : "-translate-x-full"
         } lg:translate-x-0 flex flex-col`}
       >
@@ -86,28 +77,6 @@ export default function AdminSidebar({ open, onClose }) {
             </NavLink>
           ))}
         </nav>
-
-        {/* Bottom Section */}
-        <div className="p-4 border-t border-gray-200">
-          <div className="bg-gray-50 p-4 rounded-lg">
-            <div className="flex items-start gap-3">
-              <div className="p-2 bg-white rounded-lg shadow-sm">
-                <HelpCircle className="w-5 h-5 text-gray-700" />
-              </div>
-              <div className="flex-1">
-                <p className="text-sm font-semibold text-gray-900 mb-1">
-                  Need Help?
-                </p>
-                <p className="text-xs text-gray-600 mb-3">
-                  Get support from our team
-                </p>
-                <button className="w-full bg-gray-900 text-white px-3 py-2 rounded-lg text-sm font-medium hover:bg-gray-800 transition-colors">
-                  Contact Support
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
       </aside>
     </>
   );

@@ -1,5 +1,9 @@
+import { register } from "swiper/element";
+
 export const route = {
   home: "/",
+  login: "/login",
+  register: "/register",
   policy: "/policy",
   bst: "/bst",
   productDetail: "/product/:productId",

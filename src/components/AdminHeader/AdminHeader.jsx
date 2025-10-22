@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { Menu, LogOut, User, Bell, Search } from "lucide-react";
-
+import logo from "../../assets/logo.png";
 export default function AdminHeader({ onToggleSidebar }) {
   const [showNotifications, setShowNotifications] = useState(false);
 
   return (
-    <header className="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
+    <header className="bg-white border-b border-gray-200 sticky top-0 z-100 shadow-sm">
       <div className="max-w-full mx-auto px-6 h-16 flex items-center justify-between">
         {/* Left Section */}
         <div className="flex items-center gap-4">
@@ -19,22 +19,12 @@ export default function AdminHeader({ onToggleSidebar }) {
 
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 bg-gray-900 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-sm">C</span>
+              <img src={logo} alt="" />
             </div>
             <span className="font-semibold text-gray-900 text-lg hidden sm:block">
-              Caprieux
+              The Caprieux
             </span>
           </div>
-        </div>
-
-        {/* Center - Search Bar */}
-        <div className="hidden md:flex items-center gap-2 bg-gray-50 rounded-lg px-4 py-2 w-full max-w-md mx-4">
-          <Search className="w-4 h-4 text-gray-400" />
-          <input
-            type="text"
-            placeholder="Search products, orders..."
-            className="bg-transparent border-none outline-none text-gray-700 placeholder-gray-400 w-full text-sm"
-          />
         </div>
 
         {/* Right Section */}
@@ -57,15 +47,13 @@ export default function AdminHeader({ onToggleSidebar }) {
                 ></div>
                 <div className="absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-lg border border-gray-200 overflow-hidden z-20">
                   <div className="p-4 border-b border-gray-200">
-                    <h3 className="font-semibold text-gray-900">
-                      Notifications
-                    </h3>
+                    <h3 className="font-semibold text-gray-900">Thông báo</h3>
                   </div>
                   <div className="max-h-96 overflow-y-auto">
                     {[
-                      { title: "New order received", time: "2 minutes ago" },
-                      { title: "Product out of stock", time: "1 hour ago" },
-                      { title: "New user registered", time: "3 hours ago" },
+                      { title: "Đơn hàng mới", time: "2 phút trước" },
+                      { title: "Sản phẩm sắp hết hàng", time: "1 giờ trước" },
+                      { title: "Người dùng mới đăng ký", time: "3 giờ trước" },
                     ].map((notif, i) => (
                       <div
                         key={i}
@@ -91,7 +79,7 @@ export default function AdminHeader({ onToggleSidebar }) {
               <User className="w-4 h-4 text-white" />
             </div>
             <span className="text-sm text-gray-700 font-medium hidden sm:block">
-              Admin
+              Quản trị
             </span>
           </button>
 

@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+// removed unused import 'motion' to satisfy linter
 import {
   CheckCircle,
   Package,

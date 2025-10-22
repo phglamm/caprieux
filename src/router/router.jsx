@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, Navigate } from "react-router-dom";
 
 import HomeScreen from "../pages/HomeScreen/HomeScreen";
 import { route } from ".";
@@ -14,6 +14,7 @@ import OrderFailedScreen from "../pages/OrderFailedScreen/OrderFailedScreen";
 import AboutUsScreen from "../pages/AboutUsScreen/AboutUsScreen";
 import AdminOrderScreen from "../pages/AdminOrderScreen/AdminOrderScreen";
 import AdminProducts from "../pages/AdminProducts/AdminProducts";
+import LoginScreen from "../pages/LoginScreen/LoginScreen";
 
 export const router = createBrowserRouter([
   {
@@ -59,6 +60,10 @@ export const router = createBrowserRouter([
     ],
   },
   {
+    path: route.login,
+    element: <LoginScreen />,
+  },
+  {
     path: route.admin,
     element: <AdminLayout />,
     children: [
@@ -70,10 +75,10 @@ export const router = createBrowserRouter([
         path: route.adminOrders,
         element: <AdminOrderScreen />,
       },
-      // {
-      //   path: route.adminProducts,
-      //   element: <AdminProductScreen />,
-      // },
     ],
+  },
+  {
+    path: "*",
+    element: <Navigate to={route.home} />,
   },
 ]);
