@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import {
   Home,
   Crown,
@@ -75,7 +75,7 @@ export default function ServicesScreen() {
       period: "/ năm",
       color: "from-gray-400 to-gray-600",
       features: [
-        "Giảm 20% mọi đơn hàng",
+        "Giảm 10% mọi đơn hàng",
         "Miễn phí ship từ 500k",
         "1 buổi tư vấn stylist/năm",
         "Tích điểm đổi quà",
@@ -88,7 +88,7 @@ export default function ServicesScreen() {
       period: "/ năm",
       color: "from-[#d4af37] to-[#b8941f]",
       features: [
-        "Giảm 30% mọi đơn hàng",
+        "Giảm 20% mọi đơn hàng",
         "Miễn phí ship không giới hạn",
         "3 buổi tư vấn stylist/năm",
         "Ưu tiên đặt hàng mới",
@@ -102,7 +102,7 @@ export default function ServicesScreen() {
       period: "/ năm",
       color: "from-purple-600 to-pink-600",
       features: [
-        "Giảm 40% mọi đơn hàng",
+        "Giảm 30% mọi đơn hàng",
         "Miễn phí ship không giới hạn",
         "Tư vấn stylist không giới hạn",
         "Ưu tiên tuyệt đối",
@@ -156,9 +156,9 @@ export default function ServicesScreen() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#f5e6d3] to-[#d4b896]">
+    <div className="min-h-screen bg-linear-to-br from-[#f5e6d3] to-[#d4b896]">
       {/* Hero Section */}
-      <section className="relative w-full bg-gradient-to-br from-[#3d2817] via-[#5d4433] to-[#3d2817] py-24 lg:py-32 text-center text-[#f5e6d3] overflow-hidden">
+      <section className="relative w-full bg-linear-to-br from-[#3d2817] via-[#5d4433] to-[#3d2817] py-24 lg:py-32 text-center text-[#f5e6d3] overflow-hidden">
         <div
           className="absolute inset-0 opacity-10"
           style={{
@@ -301,25 +301,25 @@ export default function ServicesScreen() {
                 key={idx}
                 variants={scaleVariants}
                 whileHover={{ scale: 1.05, y: -10 }}
-                className={`bg-white rounded-3xl overflow-hidden shadow-2xl ${
+                className={`bg-white rounded-3xl overflow-hidden shadow-2xl flex flex-col ${
                   plan.popular ? "ring-4 ring-[#d4af37]" : ""
                 }`}
               >
                 {plan.popular && (
-                  <div className="bg-gradient-to-r from-[#d4af37] to-[#b8941f] text-white text-center py-2 font-bold">
+                  <div className="bg-linear-to-r from-[#d4af37] to-[#b8941f] text-white text-center py-2 font-bold">
                     <Star className="w-4 h-4 inline mr-1" />
                     PHỔ BIẾN NHẤT
                   </div>
                 )}
                 <div
-                  className={`bg-gradient-to-br ${plan.color} p-8 text-white text-center`}
+                  className={`bg-linear-to-br ${plan.color} p-8 text-white text-center`}
                 >
                   <Crown className="w-12 h-12 mx-auto mb-4" />
                   <h3 className="text-3xl font-bold mb-2">{plan.name}</h3>
                   <div className="text-4xl font-bold mb-2">{plan.price}</div>
                   <div className="text-sm opacity-90">{plan.period}</div>
                 </div>
-                <div className="p-8">
+                <div className="p-8 flex flex-col grow">
                   <ul className="space-y-4 mb-8">
                     {plan.features.map((feature, i) => (
                       <li key={i} className="flex items-start gap-3">
@@ -328,17 +328,15 @@ export default function ServicesScreen() {
                       </li>
                     ))}
                   </ul>
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    className={`w-full py-4 rounded-full font-bold ${
-                      plan.popular
-                        ? "bg-gradient-to-r from-[#d4af37] to-[#b8941f] text-white"
-                        : "bg-[#3d2817] text-white"
-                    }`}
-                  >
-                    Đăng Ký Ngay
-                  </motion.button>
+                  <div className="mt-auto">
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      className="w-full py-4 rounded-full font-bold bg-linear-to-r from-[#d4af37] to-[#b8941f] text-white"
+                    >
+                      Đăng Ký Ngay
+                    </motion.button>
+                  </div>
                 </div>
               </motion.div>
             ))}
@@ -434,7 +432,7 @@ export default function ServicesScreen() {
                   boxShadow: "0 10px 40px rgba(212, 175, 55, 0.4)",
                 }}
                 whileTap={{ scale: 0.95 }}
-                className="w-full bg-gradient-to-r from-[#d4af37] to-[#b8941f] text-white py-4 rounded-full font-bold text-lg flex items-center justify-center gap-2 shadow-xl"
+                className="w-full bg-linear-to-r from-[#d4af37] to-[#b8941f] text-white py-4 rounded-full font-bold text-lg flex items-center justify-center gap-2 shadow-xl"
               >
                 <Crown className="w-5 h-5" />
                 Đăng Ký Ngay
@@ -489,7 +487,7 @@ export default function ServicesScreen() {
       </section>
 
       {/* CTA Section */}
-      <section className="w-full bg-gradient-to-br from-[#3d2817] via-[#5d4433] to-[#3d2817] py-20 lg:py-28 px-6 lg:px-12 text-center text-white">
+      <section className="w-full bg-linear-to-br from-[#3d2817] via-[#5d4433] to-[#3d2817] py-20 lg:py-28 px-6 lg:px-12 text-center text-white">
         <motion.div
           initial="hidden"
           whileInView="visible"
