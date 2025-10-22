@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import axios from "axios";
 import {
   MessageCircle,
   X,
@@ -67,37 +68,22 @@ export default function ChatBubble() {
     }));
 
     try {
-      const response = await fetch(API_URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          message: userMsg.text,
-          conversationHistory: conversationHistory,
-        }),
+      const response = await axios.post(API_URL, {
+        message: userMsg.text,
+        conversationHistory: conversationHistory,
       });
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const data = await response.json();
+      const data = response.data;
 
       // Extract assistant reply from response
       let assistantText = null;
-      if (data) {
-        if (
-          typeof data.message === "string" &&
-          data.message.trim().length > 0
-        ) {
-          assistantText = data.message;
-        } else if (Array.isArray(data.conversationHistory)) {
-          const lastAssistant = [...data.conversationHistory]
-            .reverse()
-            .find((r) => r.role === "assistant");
-          assistantText = lastAssistant?.content ?? null;
-        }
+      if (data && data.success && data.message && data.message.content) {
+        assistantText = data.message.content;
+      } else if (Array.isArray(data.conversationHistory)) {
+        const lastAssistant = [...data.conversationHistory]
+          .reverse()
+          .find((r) => r.role === "assistant");
+        assistantText = lastAssistant?.content ?? null;
       }
 
       if (!assistantText) {
