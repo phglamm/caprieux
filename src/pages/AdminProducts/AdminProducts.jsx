@@ -394,6 +394,19 @@ export default function AdminProducts() {
                       />
                     </label>
                     <label className="block">
+                      <div className="text-xs text-slate-600">Thương hiệu</div>
+                      <input
+                        className="w-full mt-1 p-2 border rounded"
+                        value={editValues.brand}
+                        onChange={(e) =>
+                          setEditValues((v) => ({
+                            ...v,
+                            brand: e.target.value,
+                          }))
+                        }
+                      />
+                    </label>
+                    <label className="block">
                       <div className="text-xs text-slate-600">Mô tả ngắn</div>
                       <textarea
                         className="w-full mt-1 p-2 border rounded"
