@@ -141,11 +141,7 @@ const Header = ({ scrolled }) => {
                 whileTap={{ scale: 0.95 }}
                 className="relative p-3 rounded-full bg-gradient-to-br from-[#d4af37]/20 to-[#d4af37]/10 backdrop-blur-sm border border-[#d4af37]/40 text-[#f5e6d3] hover:bg-[#d4af37]/30 hover:border-[#d4af37] hover:text-white transition-all duration-300 shadow-lg"
                 aria-label="Shopping cart"
-                onClick={() =>
-                  user
-                    ? navigate(route.cart)
-                    : toast.error("Vui lòng đăng nhập để xem giỏ hàng")
-                }
+                onClick={() => navigate(route.cart)}
               >
                 <ShoppingCart className="w-5 h-5" />
                 <span className="absolute -top-1 -right-1 w-5 h-5 bg-[#d4af37] text-[#3d2817] text-xs font-bold rounded-full flex items-center justify-center shadow-md">
