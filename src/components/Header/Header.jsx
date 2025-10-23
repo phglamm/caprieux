@@ -7,13 +7,12 @@ import logo from "../../assets/logo.png";
 import toast from "react-hot-toast";
 import { useUserStore } from "../../stores/userStore";
 import { useCartStore } from "../../stores/cartStore";
-
 const navigationItems = [
   { name: "Trang Chủ", href: route.home },
-  { name: "Chính Sách", href: route.policy },
-  { name: "Bộ Sưu Tập", href: route.bst },
-  { name: "Về Chúng Tôi", href: route.aboutUs },
+  { name: "Sản Phẩm", href: route.bst },
   { name: "Dịch Vụ", href: route.service },
+  { name: "Chính Sách", href: route.policy },
+  { name: "Về Chúng Tôi", href: route.aboutUs },
 ];
 
 const Header = ({ scrolled }) => {

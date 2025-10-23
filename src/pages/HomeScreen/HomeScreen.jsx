@@ -293,7 +293,7 @@ const HomeScreen = () => {
               {
                 icon: <Package className="w-12 h-12" />,
                 title: "Giao Hàng Dễ Dàng",
-                desc: "Miễn phí giao hàng tận nơi & trả hàng tiện lợi",
+                desc: "Giao hàng tận nơi & trả hàng dễ dàng",
               },
               {
                 icon: <TrendingUp className="w-12 h-12" />,

@@ -12,6 +12,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import productService from "../../services/productService";
+import banner3 from "../../assets/banner3.png";
 
 export default function BstScreen() {
   const [products, setProducts] = useState([]);
@@ -178,55 +179,57 @@ export default function BstScreen() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#f5e6d3] to-[#d4b896]">
       {/* Hero Section */}
-      <section className="relative w-full bg-gradient-to-br from-[#3d2817] via-[#5d4433] to-[#3d2817] py-24 lg:py-32 text-center text-[#f5e6d3] overflow-hidden">
-        <div
-          className="absolute inset-0 opacity-10"
-          style={{
-            backgroundImage:
-              "radial-gradient(circle, #f5e6d3 1px, transparent 1px)",
-            backgroundSize: "30px 30px",
-          }}
-        ></div>
-
-        <motion.div
-          animate={{ y: [-20, 0, -20] }}
-          transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-20 left-[10%]"
-        >
-          <Sparkles className="w-8 h-8 text-[#d4af37] opacity-60" />
-        </motion.div>
-        <motion.div
-          animate={{ y: [0, -20, 0] }}
-          transition={{
-            duration: 4,
-            repeat: Infinity,
-            ease: "easeInOut",
-            delay: 1,
-          }}
-          className="absolute top-40 right-[15%]"
-        >
-          <Sparkles className="w-6 h-6 text-[#d4af37] opacity-40" />
-        </motion.div>
-
-        <motion.div
-          initial="hidden"
-          animate="visible"
-          variants={containerVariants}
-          className="relative z-10 px-6 lg:px-12 max-w-7xl mx-auto"
-        >
-          <motion.h1
-            variants={itemVariants}
-            className="text-5xl lg:text-7xl font-bold mb-6 drop-shadow-lg"
+      {/* Hero Section */}
+      <section className="relative w-full h-[700px] lg:h-[900px] text-center text-[#f5e6d3] overflow-hidden">
+        <img
+          src={banner3}
+          alt="Banner"
+          className="absolute inset-0 w-full h-full object-cover z-0"
+        />
+        <div className="absolute inset-0 bg-black/40 z-5"></div>
+        <div className="relative z-10 h-full flex flex-col items-center justify-center">
+          {/* Sparkles animations */}
+          <motion.div
+            animate={{ y: [-20, 0, -20] }}
+            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute top-20 left-[10%]"
           >
-            Bộ Sưu Tập Của Chúng Tôi
-          </motion.h1>
-          <motion.p
-            variants={itemVariants}
-            className="text-xl lg:text-2xl mb-10 opacity-95 leading-relaxed max-w-4xl mx-auto"
+            <Sparkles className="w-8 h-8 text-[#d4af37] opacity-60" />
+          </motion.div>
+          <motion.div
+            animate={{ y: [0, -20, 0] }}
+            transition={{
+              duration: 4,
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay: 1,
+            }}
+            className="absolute top-40 right-[15%]"
           >
-            Khám phá những trang phục cao cấp, được tuyển chọn kỹ lưỡng
-          </motion.p>
-        </motion.div>
+            <Sparkles className="w-6 h-6 text-[#d4af37] opacity-40" />
+          </motion.div>
+
+          {/* Text Content */}
+          <motion.div
+            initial="hidden"
+            animate="visible"
+            variants={containerVariants}
+            className="px-6 lg:px-12 max-w-7xl mx-auto"
+          >
+            <motion.h1
+              variants={itemVariants}
+              className="text-5xl lg:text-7xl font-bold mb-6 drop-shadow-lg"
+            >
+              Sản Phẩm Của Chúng Tôi
+            </motion.h1>
+            <motion.p
+              variants={itemVariants}
+              className="text-xl lg:text-2xl mb-10 opacity-95 leading-relaxed max-w-4xl mx-auto"
+            >
+              Khám phá những trang phục cao cấp, được tuyển chọn kỹ lưỡng
+            </motion.p>
+          </motion.div>
+        </div>
       </section>
 
       {/* Products Section */}
@@ -465,6 +468,9 @@ export default function BstScreen() {
                         <div className="flex items-center justify-between mb-4">
                           <div className="text-3xl font-bold text-[#3d2817]">
                             {formatPrice(product.price)}
+                            <span className="text-lg font-normal text-[#5d4433]">
+                              / 3 ngày
+                            </span>
                           </div>
                         </div>
                         <motion.button

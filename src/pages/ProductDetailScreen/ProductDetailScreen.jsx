@@ -257,7 +257,7 @@ export default function ProductDetailScreen() {
                   className="w-full py-5 rounded-full bg-linear-to-r from-[#d4af37] to-[#b8941f] text-white text-xl font-bold flex items-center justify-center gap-2 shadow-xl"
                 >
                   <ShoppingCart className="w-6 h-6" />
-                  Thêm Vào Giỏ Hàng
+                  Chọn Thuê
                 </motion.button>
               </div>
 
