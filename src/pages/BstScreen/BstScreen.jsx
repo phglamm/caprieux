@@ -23,7 +23,7 @@ export default function BstScreen() {
   const [showFilters, setShowFilters] = useState(false);
 
   // Filter states
-  const [priceRange, setPriceRange] = useState([0, 1000000]);
+  const [priceRange, setPriceRange] = useState([0, 20000000]);
   const [selectedSizes, setSelectedSizes] = useState([]);
   const [selectedBrands, setSelectedBrands] = useState([]);
 
@@ -141,14 +141,14 @@ export default function BstScreen() {
   };
 
   const clearFilters = () => {
-    setPriceRange([0, 1000000]);
+    setPriceRange([0, 20000000]);
     setSelectedSizes([]);
     setSelectedBrands([]);
   };
 
   const hasActiveFilters =
     priceRange[0] > 0 ||
-    priceRange[1] < 1000000 ||
+    priceRange[1] < 20000000 ||
     selectedSizes.length > 0 ||
     selectedBrands.length > 0;
 
@@ -249,7 +249,7 @@ export default function BstScreen() {
                 <span className="bg-[#d4af37] text-[#3d2817] px-2 py-1 rounded-full text-xs">
                   {selectedSizes.length +
                     selectedBrands.length +
-                    (priceRange[0] > 0 || priceRange[1] < 1000000 ? 1 : 0)}
+                    (priceRange[0] > 0 || priceRange[1] < 20000000 ? 1 : 0)}
                 </span>
               )}
             </motion.button>
@@ -293,7 +293,7 @@ export default function BstScreen() {
                           <input
                             type="range"
                             min="0"
-                            max="1000000"
+                            max="20000000"
                             step="50000"
                             value={priceRange[0]}
                             onChange={(e) =>
@@ -312,7 +312,7 @@ export default function BstScreen() {
                           <input
                             type="range"
                             min="0"
-                            max="1000000"
+                            max="20000000"
                             step="50000"
                             value={priceRange[1]}
                             onChange={(e) =>
