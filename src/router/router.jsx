@@ -79,7 +79,7 @@ export const router = createBrowserRouter([
     element: <AdminLayout />,
     children: [
       {
-        path: route.adminProducts,
+        index: true,
         element: <AdminProducts />,
       },
       {

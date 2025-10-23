@@ -85,7 +85,7 @@ export default function RegisterScreen() {
       login(user);
 
       if (user.role === "admin") {
-        navigate("/admin/products");
+        navigate("/admin");
       } else {
         navigate("/");
       }

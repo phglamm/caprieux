@@ -60,8 +60,8 @@ export default function AdminOrderScreen() {
       o.fullName,
       o.phoneNumber,
       o.address,
-      typeof o.product === "string" ? o.product : o.product?.title || "-",
-      o.quantity,
+      o.items.map((item) => `${item.product?.title || "-"}`).join(" | "),
+      o.items.map((item) => `${item.quantity}`).join(" | "),
       o.amount,
       o.status,
       new Date(o.createdAt).toLocaleString("vi-VN"),
@@ -194,12 +194,16 @@ export default function AdminOrderScreen() {
                         {o.address}
                       </td>
                       <td className="px-6 py-4 text-sm text-slate-700">
-                        {typeof o.product === "string"
-                          ? o.product
-                          : o.product?.title || "-"}
+                        {o.items && o.items.length > 0
+                          ? o.items
+                              .map((item) => item.product?.title || "-")
+                              .join(" | ")
+                          : "-"}
                       </td>
                       <td className="px-6 py-4 text-sm text-slate-700">
-                        {o.quantity}
+                        {o.items && o.items.length > 0
+                          ? o.items.map((item) => item.quantity).join(" | ")
+                          : "-"}{" "}
                       </td>
                       <td className="px-6 py-4 text-sm font-semibold text-slate-900">
                         {formatCurrency(o.amount)}
@@ -292,13 +296,32 @@ export default function AdminOrderScreen() {
                 </div>
                 <div>
                   <span className="font-medium">Sản phẩm: </span>
-                  {typeof selectedOrder.product === "string"
-                    ? selectedOrder.product
-                    : selectedOrder.product?.title || "-"}
-                </div>
-                <div>
-                  <span className="font-medium">Số lượng: </span>
-                  {selectedOrder.quantity}
+                  {selectedOrder.items && selectedOrder.items.length > 0 ? (
+                    <table className="w-full mt-2 border rounded">
+                      <thead>
+                        <tr className="bg-slate-50">
+                          <th className="px-2 py-1 text-left">Tên sản phẩm</th>
+                          <th className="px-2 py-1 text-left">Số lượng</th>
+                          <th className="px-2 py-1 text-left">Đơn giá</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {selectedOrder.items.map((item) => (
+                          <tr key={item._id}>
+                            <td className="px-2 py-1">
+                              {item.product?.title || "-"}
+                            </td>
+                            <td className="px-2 py-1">{item.quantity}</td>
+                            <td className="px-2 py-1">
+                              {formatCurrency(item.price)}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  ) : (
+                    "-"
+                  )}
                 </div>
                 <div>
                   <span className="font-medium">Tổng tiền: </span>

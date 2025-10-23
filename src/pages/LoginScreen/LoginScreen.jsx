@@ -41,7 +41,7 @@ export default function LoginScreen() {
       console.log("Decoded user:", user);
       login(user);
       if (user.role === "admin") {
-        navigate("/admin/products");
+        navigate("/admin");
       } else {
         navigate("/");
       }
