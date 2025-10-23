@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { Eye, Package, X } from "lucide-react";
 import orderService from "../../services/orderService";
+import toast from "react-hot-toast";
 
 export default function AdminOrderScreen() {
   const [orders, setOrders] = useState([]);
@@ -39,7 +40,7 @@ export default function AdminOrderScreen() {
   // Export orders to CSV (Excel-friendly with BOM)
   const exportToCSV = () => {
     if (!orders || orders.length === 0) {
-      alert("Không có đơn hàng để xuất");
+      toast.error("Không có đơn hàng để xuất");
       return;
     }
 

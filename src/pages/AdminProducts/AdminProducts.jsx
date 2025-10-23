@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Edit, Trash2, Save, X, Package } from "lucide-react";
 import productService from "./../../services/productService";
+import toast from "react-hot-toast";
 
 export default function AdminProducts() {
   const [products, setProducts] = useState([]);
@@ -54,8 +55,9 @@ export default function AdminProducts() {
       setProducts((p) => p.filter((x) => x._id !== selectedProduct._id));
       setShowDeleteModal(false);
       setSelectedProduct(null);
+      toast.success("Xoá sản phẩm thành công");
     } catch (err) {
-      alert("Xoá thất bại: " + (err.message || err));
+      toast.error("Xoá thất bại: " + (err.message || err));
     }
   };
 
@@ -160,8 +162,9 @@ export default function AdminProducts() {
       );
 
       cancelEdit();
+      toast.success("Cập nhật sản phẩm thành công");
     } catch (err) {
-      alert("Cập nhật thất bại: " + (err.message || err));
+      toast.error("Cập nhật thất bại: " + (err.message || err));
     }
   };
 
@@ -190,9 +193,10 @@ export default function AdminProducts() {
       const resp = await productService.createProduct(payload);
       const created = resp.data;
       setProducts((list) => [created, ...list]);
+      toast.success("Tạo sản phẩm thành công");
       cancelEdit();
     } catch (err) {
-      alert("Tạo sản phẩm thất bại: " + (err.message || err));
+      toast.error("Tạo sản phẩm thất bại: " + (err.message || err));
     }
   };
 
