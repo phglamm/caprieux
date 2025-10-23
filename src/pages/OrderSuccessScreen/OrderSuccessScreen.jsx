@@ -12,12 +12,13 @@ import {
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import paymentService from "./../../services/paymentService";
+import { useCartStore } from "../../stores/cartStore";
 
 export default function OrderSuccessScreen() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [orderDetails, setOrderDetails] = useState(null);
-
+  const clearCart = useCartStore((state) => state.clearCart);
   useEffect(() => {
     // Get order details from URL params if available
     const orderId = searchParams.get("orderId");
@@ -34,6 +35,7 @@ export default function OrderSuccessScreen() {
         console.log("Posting to webhook with data:", requestData);
         const response = await paymentService.postWebhook(requestData);
         console.log("Webhook posted successfully:", response.data);
+        clearCart();
       } catch (error) {
         console.error("Error posting to webhook:", error);
       }

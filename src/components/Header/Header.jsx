@@ -1,8 +1,8 @@
-import { use, useState } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { route } from "../../router";
 import { useNavigate } from "react-router-dom";
-import { Search, X, Menu, ShoppingCart, User } from "lucide-react";
+import { Search, X, Menu, ShoppingCart, User, LogOut } from "lucide-react";
 import logo from "../../assets/logo.png";
 import toast from "react-hot-toast";
 import { useUserStore } from "../../stores/userStore";
@@ -22,8 +22,10 @@ const Header = ({ scrolled }) => {
   const [isSearchExpanded, setIsSearchExpanded] = useState(false);
   const navigate = useNavigate();
   const user = useUserStore((state) => state.user);
+  const logout = useUserStore((state) => state.logout);
   console.log("Header user:", user);
   const countCart = useCartStore((state) => state.getItemCount());
+
   return (
     <motion.header
       className={`sticky top-0 z-50 transition-all duration-500 ${
@@ -173,6 +175,23 @@ const Header = ({ scrolled }) => {
                   <span className="ml-2 text-sm font-medium">Đăng Nhập</span>
                 )}
               </motion.button>
+
+              {/* Logout Icon - Only show when user is logged in */}
+              {user && (
+                <motion.button
+                  whileHover={{ scale: 1.1, y: -2 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="p-3 rounded-full bg-gradient-to-br from-red-500/20 to-red-500/10 backdrop-blur-sm border border-red-500/40 text-[#f5e6d3] hover:bg-red-500/30 hover:border-red-500 hover:text-white transition-all duration-300 shadow-lg"
+                  aria-label="Logout"
+                  onClick={() => {
+                    logout();
+                    toast.success("Đăng xuất thành công");
+                    navigate(route.home);
+                  }}
+                >
+                  <LogOut className="w-5 h-5" />
+                </motion.button>
+              )}
             </div>
           </div>
 
@@ -200,9 +219,30 @@ const Header = ({ scrolled }) => {
               whileTap={{ scale: 0.9 }}
               className="p-2.5 rounded-lg bg-white/10 backdrop-blur-sm border border-[#d4af37]/30 text-[#f5e6d3] hover:bg-white/20 hover:border-[#d4af37]/60 transition-all duration-300"
               aria-label="User account"
+              onClick={() => {
+                if (!user) {
+                  navigate(route.login);
+                }
+              }}
             >
               <User className="w-5 h-5" />
             </motion.button>
+
+            {/* Mobile Logout Icon */}
+            {user && (
+              <motion.button
+                whileTap={{ scale: 0.9 }}
+                className="p-2.5 rounded-lg bg-red-500/10 backdrop-blur-sm border border-red-500/30 text-[#f5e6d3] hover:bg-red-500/20 hover:border-red-500/60 transition-all duration-300"
+                aria-label="Logout"
+                onClick={() => {
+                  logout();
+                  toast.success("Đăng xuất thành công");
+                  navigate(route.home);
+                }}
+              >
+                <LogOut className="w-5 h-5" />
+              </motion.button>
+            )}
 
             {/* Mobile Menu Button */}
             <button
