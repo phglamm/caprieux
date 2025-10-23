@@ -188,27 +188,6 @@ export default function BstScreen() {
         />
         <div className="absolute inset-0 bg-black/40 z-5"></div>
         <div className="relative z-10 h-full flex flex-col items-center justify-center">
-          {/* Sparkles animations */}
-          <motion.div
-            animate={{ y: [-20, 0, -20] }}
-            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-            className="absolute top-20 left-[10%]"
-          >
-            <Sparkles className="w-8 h-8 text-[#d4af37] opacity-60" />
-          </motion.div>
-          <motion.div
-            animate={{ y: [0, -20, 0] }}
-            transition={{
-              duration: 4,
-              repeat: Infinity,
-              ease: "easeInOut",
-              delay: 1,
-            }}
-            className="absolute top-40 right-[15%]"
-          >
-            <Sparkles className="w-6 h-6 text-[#d4af37] opacity-40" />
-          </motion.div>
-
           {/* Text Content */}
           <motion.div
             initial="hidden"
