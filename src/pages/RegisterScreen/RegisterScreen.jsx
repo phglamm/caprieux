@@ -1,24 +1,35 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Lock, User, Eye, EyeOff, LogIn, Sparkles } from "lucide-react";
+import {
+  Lock,
+  User,
+  Eye,
+  EyeOff,
+  UserPlus,
+  Sparkles,
+  Mail,
+} from "lucide-react";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 import authService from "../../services/authService";
 import { useUserStore } from "../../stores/userStore";
-import { route } from "../../router";
 
-export default function LoginScreen() {
+export default function RegisterScreen() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     username: "",
+    email: "",
     password: "",
+    confirmPassword: "",
   });
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const login = useUserStore((state) => state.login);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -33,21 +44,57 @@ export default function LoginScreen() {
     setLoading(true);
     setError("");
 
+    // Validation
+    if (
+      !formData.username ||
+      !formData.email ||
+      !formData.password ||
+      !formData.confirmPassword
+    ) {
+      setError("Vui lòng điền đầy đủ thông tin");
+      setLoading(false);
+      return;
+    }
+
+    if (formData.password !== formData.confirmPassword) {
+      setError("Mật khẩu xác nhận không khớp");
+      setLoading(false);
+      return;
+    }
+
+    if (formData.password.length < 6) {
+      setError("Mật khẩu phải có ít nhất 6 ký tự");
+      setLoading(false);
+      return;
+    }
+
     try {
-      const response = await authService.login(formData);
-      console.log("Login successful:", response.data);
+      const registerData = {
+        username: formData.username,
+        email: formData.email,
+        password: formData.password,
+      };
+
+      const response = await authService.register(registerData);
+      console.log("Register successful:", response.data);
+
+      // Auto login after registration
       Cookies.set("token", response.data.token, { expires: 1 });
       const user = jwtDecode(response.data.token);
       console.log("Decoded user:", user);
       login(user);
+
       if (user.role === "admin") {
         navigate("/admin/products");
       } else {
         navigate("/");
       }
     } catch (error) {
-      console.error("Login error:", error);
-      setError("Đăng nhập không thành công. Vui lòng kiểm tra lại thông tin.");
+      console.error("Register error:", error);
+      setError(
+        error.response?.data?.message ||
+          "Đăng ký không thành công. Vui lòng kiểm tra lại thông tin."
+      );
     } finally {
       setLoading(false);
     }
@@ -134,18 +181,18 @@ export default function LoginScreen() {
           >
             The Caprieux
           </motion.h1>
-          <p className="text-lg text-[#5d4433]">Chào mừng trở lại</p>
+          <p className="text-lg text-[#5d4433]">Tạo tài khoản mới</p>
         </motion.div>
 
-        {/* Login Card */}
+        {/* Register Card */}
         <motion.div
           variants={itemVariants}
           className="bg-white rounded-3xl shadow-2xl overflow-hidden border border-[#d4b896]/30"
         >
           <div className="bg-gradient-to-r from-[#3d2817] via-[#5d4433] to-[#3d2817] p-8 text-center">
-            <h2 className="text-2xl font-bold text-[#f5e6d3]">Đăng Nhập</h2>
+            <h2 className="text-2xl font-bold text-[#f5e6d3]">Đăng Ký</h2>
             <p className="text-[#f5e6d3]/80 mt-2">
-              Truy cập vào tài khoản của bạn
+              Tạo tài khoản để trải nghiệm
             </p>
           </div>
 
@@ -179,6 +226,24 @@ export default function LoginScreen() {
               </div>
             </motion.div>
 
+            {/* Email Field */}
+            <motion.div variants={itemVariants} className="mb-6">
+              <label className="block text-[#3d2817] font-semibold mb-2">
+                Email
+              </label>
+              <div className="relative">
+                <Mail className="absolute left-4 top-1/2 transform -translate-y-1/2 text-[#5d4433] w-5 h-5" />
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  placeholder="Nhập địa chỉ email"
+                  className="w-full pl-12 pr-4 py-4 bg-gradient-to-br from-[#f5e6d3]/30 to-[#d4b896]/20 border-2 border-[#d4b896]/40 rounded-xl focus:outline-none focus:border-[#d4af37] transition-all text-[#3d2817] placeholder-[#5d4433]/50"
+                />
+              </div>
+            </motion.div>
+
             {/* Password Field */}
             <motion.div variants={itemVariants} className="mb-6">
               <label className="block text-[#3d2817] font-semibold mb-2">
@@ -191,7 +256,7 @@ export default function LoginScreen() {
                   name="password"
                   value={formData.password}
                   onChange={handleChange}
-                  placeholder="Nhập mật khẩu"
+                  placeholder="Nhập mật khẩu (tối thiểu 6 ký tự)"
                   className="w-full pl-12 pr-12 py-4 bg-gradient-to-br from-[#f5e6d3]/30 to-[#d4b896]/20 border-2 border-[#d4b896]/40 rounded-xl focus:outline-none focus:border-[#d4af37] transition-all text-[#3d2817] placeholder-[#5d4433]/50"
                 />
                 <button
@@ -208,26 +273,54 @@ export default function LoginScreen() {
               </div>
             </motion.div>
 
-            {/* Remember Me & Forgot Password */}
-            <motion.div
-              variants={itemVariants}
-              className="flex items-center justify-between mb-8"
-            >
-              <label className="flex items-center cursor-pointer group">
+            {/* Confirm Password Field */}
+            <motion.div variants={itemVariants} className="mb-6">
+              <label className="block text-[#3d2817] font-semibold mb-2">
+                Xác nhận mật khẩu
+              </label>
+              <div className="relative">
+                <Lock className="absolute left-4 top-1/2 transform -translate-y-1/2 text-[#5d4433] w-5 h-5" />
+                <input
+                  type={showConfirmPassword ? "text" : "password"}
+                  name="confirmPassword"
+                  value={formData.confirmPassword}
+                  onChange={handleChange}
+                  placeholder="Nhập lại mật khẩu"
+                  className="w-full pl-12 pr-12 py-4 bg-gradient-to-br from-[#f5e6d3]/30 to-[#d4b896]/20 border-2 border-[#d4b896]/40 rounded-xl focus:outline-none focus:border-[#d4af37] transition-all text-[#3d2817] placeholder-[#5d4433]/50"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  className="absolute right-4 top-1/2 transform -translate-y-1/2 text-[#5d4433] hover:text-[#d4af37] transition-colors"
+                >
+                  {showConfirmPassword ? (
+                    <EyeOff className="w-5 h-5" />
+                  ) : (
+                    <Eye className="w-5 h-5" />
+                  )}
+                </button>
+              </div>
+            </motion.div>
+
+            {/* Terms and Conditions */}
+            <motion.div variants={itemVariants} className="mb-8">
+              <label className="flex items-start cursor-pointer group">
                 <input
                   type="checkbox"
-                  className="w-4 h-4 text-[#d4af37] border-[#d4b896] rounded focus:ring-[#d4af37] cursor-pointer"
+                  className="w-4 h-4 mt-1 text-[#d4af37] border-[#d4b896] rounded focus:ring-[#d4af37] cursor-pointer"
+                  required
                 />
                 <span className="ml-2 text-sm text-[#5d4433] group-hover:text-[#3d2817] transition-colors">
-                  Ghi nhớ đăng nhập
+                  Tôi đồng ý với{" "}
+                  <a href="#" className="text-[#d4af37] hover:underline">
+                    Điều khoản dịch vụ
+                  </a>{" "}
+                  và{" "}
+                  <a href="#" className="text-[#d4af37] hover:underline">
+                    Chính sách bảo mật
+                  </a>
                 </span>
               </label>
-              <a
-                href="#"
-                className="text-sm text-[#d4af37] hover:text-[#b8941f] font-semibold transition-colors"
-              >
-                Quên mật khẩu?
-              </a>
             </motion.div>
 
             {/* Submit Button */}
@@ -260,8 +353,8 @@ export default function LoginScreen() {
                 </>
               ) : (
                 <>
-                  <LogIn className="w-5 h-5" />
-                  <span>Đăng Nhập</span>
+                  <UserPlus className="w-5 h-5" />
+                  <span>Đăng Ký</span>
                 </>
               )}
             </motion.button>
@@ -276,15 +369,19 @@ export default function LoginScreen() {
               </div>
             </motion.div>
 
-            {/* Sign Up Link */}
+            {/* Login Link */}
             <motion.div variants={itemVariants} className="text-center">
               <p className="text-[#5d4433]">
-                Chưa có tài khoản?{" "}
+                Đã có tài khoản?{" "}
                 <a
-                  href={route.register}
+                  href="#"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    navigate("/login");
+                  }}
                   className="text-[#d4af37] hover:text-[#b8941f] font-bold transition-colors"
                 >
-                  Đăng ký ngay
+                  Đăng nhập ngay
                 </a>
               </p>
             </motion.div>
@@ -296,7 +393,7 @@ export default function LoginScreen() {
           variants={itemVariants}
           className="text-center mt-8 text-sm text-[#5d4433]"
         >
-          Bằng việc đăng nhập, bạn đồng ý với{" "}
+          Bằng việc đăng ký, bạn đồng ý với{" "}
           <a href="#" className="text-[#d4af37] hover:underline">
             Điều khoản dịch vụ
           </a>{" "}

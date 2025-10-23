@@ -16,6 +16,7 @@ import AdminOrderScreen from "../pages/AdminOrderScreen/AdminOrderScreen";
 import AdminProducts from "../pages/AdminProducts/AdminProducts";
 import LoginScreen from "../pages/LoginScreen/LoginScreen";
 import CartScreen from "../pages/CartScreen/CartScreen";
+import RegisterScreen from "../pages/RegisterScreen/RegisterScreen";
 
 export const router = createBrowserRouter([
   {
@@ -65,6 +66,10 @@ export const router = createBrowserRouter([
       {
         path: route.login,
         element: <LoginScreen />,
+      },
+      {
+        path: route.register,
+        element: <RegisterScreen />,
       },
     ],
   },

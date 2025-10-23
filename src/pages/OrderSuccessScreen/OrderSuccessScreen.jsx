@@ -13,7 +13,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import paymentService from "./../../services/paymentService";
 import { useCartStore } from "../../stores/cartStore";
-
+import { motion } from "framer-motion";
 export default function OrderSuccessScreen() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();

@@ -23,6 +23,7 @@ const Header = ({ scrolled }) => {
   const navigate = useNavigate();
   const user = useUserStore((state) => state.user);
   const logout = useUserStore((state) => state.logout);
+  const clearCart = useCartStore((state) => state.clearCart);
   console.log("Header user:", user);
   const countCart = useCartStore((state) => state.getItemCount());
 
@@ -185,6 +186,7 @@ const Header = ({ scrolled }) => {
                   aria-label="Logout"
                   onClick={() => {
                     logout();
+                    clearCart();
                     toast.success("Đăng xuất thành công");
                     navigate(route.home);
                   }}
