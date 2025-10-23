@@ -6,9 +6,9 @@ const Footer = () => (
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 items-start">
         <div className="space-y-4">
           <h3 className="text-3xl text-[#d4af37] font-bold">THE CAPRIEUX</h3>
-          <p className="opacity-90 leading-relaxed">
+          <p className="text-sm opacity-90 leading-relaxed">
             Tiên phong trong cho thuê thời trang xa xỉ bền vững tại TP. Hồ Chí
-            Minh từ năm 2025.
+            Minh từ năm 2025
           </p>
         </div>
 
@@ -16,17 +16,26 @@ const Footer = () => (
           <h4 className="text-2xl text-[#d4af37] font-bold">Khám Phá</h4>
           <ul className="space-y-2">
             <li>
-              <a href="#" className="hover:text-[#d4af37] transition-colors">
+              <a
+                href="#"
+                className="hover:text-[#d4af37] transition-colors text-sm"
+              >
                 Điều Khoản Thuê
               </a>
             </li>
             <li>
-              <a href="#" className="hover:text-[#d4af37] transition-colors">
+              <a
+                href="#"
+                className="hover:text-[#d4af37] transition-colors text-sm"
+              >
                 Chính Sách Bảo Mật
               </a>
             </li>
             <li>
-              <a href="#" className="hover:text-[#d4af37] transition-colors">
+              <a
+                href="#"
+                className="hover:text-[#d4af37] transition-colors text-sm"
+              >
                 Chính Sách Hư Hỏng
               </a>
             </li>
@@ -70,21 +79,6 @@ const Footer = () => (
               className="hover:text-[#d4af37] transition-colors"
             >
               <Instagram className="w-6 h-6" />
-            </a>
-            <a
-              href="#"
-              aria-label="Facebook"
-              className="hover:text-[#d4af37] transition-colors"
-            >
-              {/* lucide doesn't have a branded Facebook icon by default; use generic Insta as placeholder or an SVG if needed */}
-              <svg
-                className="w-6 h-6"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-                aria-hidden
-              >
-                <path d="M22 12.07C22 6.48 17.52 2 11.93 2 6.34 2 1.86 6.48 1.86 12.07c0 4.99 3.66 9.13 8.44 9.93v-7.03H8.36v-2.9h3.94V9.02c0-3.9 2.33-6.04 5.9-6.04 1.71 0 3.5.31 3.5.31v3.85h-1.97c-1.94 0-2.54 1.2-2.54 2.43v2.25h4.32l-.69 2.9h-3.63v7.03c4.78-.8 8.44-4.94 8.44-9.93z" />
-              </svg>
             </a>
           </div>
         </div>
