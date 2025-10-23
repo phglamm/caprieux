@@ -1,9 +1,12 @@
-import { useState } from "react";
+import { use, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { route } from "../../router";
 import { useNavigate } from "react-router-dom";
-import { Search, X, Menu } from "lucide-react";
+import { Search, X, Menu, ShoppingCart, User } from "lucide-react";
 import logo from "../../assets/logo.png";
+import toast from "react-hot-toast";
+import { useUserStore } from "../../stores/userStore";
+import { useCartStore } from "../../stores/cartStore";
 
 const navigationItems = [
   { name: "Trang Chủ", href: route.home },
@@ -18,7 +21,9 @@ const Header = ({ scrolled }) => {
   const [query, setQuery] = useState("");
   const [isSearchExpanded, setIsSearchExpanded] = useState(false);
   const navigate = useNavigate();
-
+  const user = useUserStore((state) => state.user);
+  console.log("Header user:", user);
+  const countCart = useCartStore((state) => state.getItemCount());
   return (
     <motion.header
       className={`sticky top-0 z-50 transition-all duration-500 ${
@@ -27,7 +32,7 @@ const Header = ({ scrolled }) => {
           : "bg-gradient-to-r from-[#3d2817] via-[#4a3520] to-[#5d4433] shadow-lg"
       }`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-9xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           {/* Logo Section */}
           <motion.div
@@ -50,8 +55,8 @@ const Header = ({ scrolled }) => {
             </div>
           </motion.div>
 
-          {/* Desktop Navigation & Search */}
-          <div className="hidden lg:flex items-center gap-8">
+          {/* Desktop Navigation & Actions */}
+          <div className="hidden lg:flex items-center gap-6">
             {/* Navigation Links */}
             <nav className="flex items-center gap-1">
               {navigationItems.map((item) => (
@@ -67,73 +72,147 @@ const Header = ({ scrolled }) => {
               ))}
             </nav>
 
-            {/* Search Bar */}
-            <motion.form
-              onSubmit={(e) => {
-                e.preventDefault();
-                const trimmed = (query || "").trim();
-                if (trimmed) {
-                  navigate(
-                    `${route.bst}?searchTerm=${encodeURIComponent(trimmed)}`
-                  );
-                } else {
-                  navigate(route.bst);
-                }
-              }}
-              onMouseEnter={() => setIsSearchExpanded(true)}
-              onMouseLeave={() => {
-                if (!query) setIsSearchExpanded(false);
-              }}
-              onFocus={() => setIsSearchExpanded(true)}
-              className="relative overflow-hidden"
-              aria-label="site search"
-            >
-              <motion.div
-                animate={{
-                  width: isSearchExpanded ? "280px" : "48px",
+            {/* Action Icons Group */}
+            <div className="flex items-center gap-3 pl-4 border-l border-[#d4af37]/30">
+              {/* Search Bar */}
+              <motion.form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  const trimmed = (query || "").trim();
+                  if (trimmed) {
+                    navigate(
+                      `${route.bst}?searchTerm=${encodeURIComponent(trimmed)}`
+                    );
+                  } else {
+                    navigate(route.bst);
+                  }
                 }}
-                transition={{ duration: 0.3, ease: "easeInOut" }}
-                className="relative h-12"
+                onMouseEnter={() => setIsSearchExpanded(true)}
+                onMouseLeave={() => {
+                  if (!query) setIsSearchExpanded(false);
+                }}
+                onFocus={() => setIsSearchExpanded(true)}
+                className="relative overflow-hidden"
+                aria-label="site search"
               >
                 <motion.div
-                  className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[white] pointer-events-none z-10"
                   animate={{
-                    left: isSearchExpanded ? "16px" : "12px",
+                    width: isSearchExpanded ? "280px" : "48px",
                   }}
-                  transition={{ duration: 0.3 }}
+                  transition={{ duration: 0.3, ease: "easeInOut" }}
+                  className="relative h-12"
                 >
-                  <Search
-                    className={`w-5 h-5 ${
-                      isSearchExpanded ? " text-[#3d2817]" : "text-[white]"
-                    } `}
+                  <motion.div
+                    className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 pointer-events-none z-10"
+                    animate={{
+                      left: isSearchExpanded ? "16px" : "12px",
+                    }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <Search
+                      className={`w-5 h-5 ${
+                        isSearchExpanded ? "text-[#3d2817]" : "text-[#f5e6d3]"
+                      }`}
+                    />
+                  </motion.div>
+                  <motion.input
+                    type="text"
+                    value={query}
+                    onChange={(e) => setQuery(e.target.value)}
+                    placeholder="Tìm kiếm sản phẩm..."
+                    className="w-full h-full pl-12 pr-4 rounded-full bg-[#f5e6d3] text-[#3d2817] placeholder-[#5d4433]/60 focus:outline-none focus:ring-2 focus:ring-[#d4af37] shadow-lg text-sm"
+                    animate={{
+                      opacity: isSearchExpanded ? 1 : 0,
+                    }}
+                    transition={{ duration: 0.2 }}
                   />
+                  {!isSearchExpanded && (
+                    <div className="absolute inset-0 rounded-full bg-transparent" />
+                  )}
                 </motion.div>
-                <motion.input
-                  type="text"
-                  value={query}
-                  onChange={(e) => setQuery(e.target.value)}
-                  placeholder="Tìm kiếm sản phẩm..."
-                  className="w-full h-full pl-12 pr-4 rounded-full bg-[white] text-[#3d2817] placeholder-[#5d4433]/60 focus:outline-none focus:ring-2  shadow-xl text-sm"
-                  animate={{
-                    opacity: isSearchExpanded ? 1 : 0,
-                  }}
-                  transition={{ duration: 0.2 }}
-                />
-                {!isSearchExpanded && (
-                  <div className="absolute inset-0 rounded-full bg-transparent" />
+              </motion.form>
+
+              {/* Cart Icon */}
+              <motion.button
+                whileHover={{ scale: 1.1, y: -2 }}
+                whileTap={{ scale: 0.95 }}
+                className="relative p-3 rounded-full bg-gradient-to-br from-[#d4af37]/20 to-[#d4af37]/10 backdrop-blur-sm border border-[#d4af37]/40 text-[#f5e6d3] hover:bg-[#d4af37]/30 hover:border-[#d4af37] hover:text-white transition-all duration-300 shadow-lg"
+                aria-label="Shopping cart"
+                onClick={() =>
+                  user
+                    ? navigate(route.cart)
+                    : toast.error("Vui lòng đăng nhập để xem giỏ hàng")
+                }
+              >
+                <ShoppingCart className="w-5 h-5" />
+                <span className="absolute -top-1 -right-1 w-5 h-5 bg-[#d4af37] text-[#3d2817] text-xs font-bold rounded-full flex items-center justify-center shadow-md">
+                  {countCart}
+                </span>
+              </motion.button>
+
+              {/* Login Icon */}
+              <motion.button
+                whileHover={{ scale: 1.1, y: -2 }}
+                whileTap={{ scale: 0.95 }}
+                className=" flex p-3 rounded-full bg-gradient-to-br from-[#d4af37]/20 to-[#d4af37]/10 backdrop-blur-sm border border-[#d4af37]/40 text-[#f5e6d3] hover:bg-[#d4af37]/30 hover:border-[#d4af37] hover:text-white transition-all duration-300 shadow-lg"
+                aria-label="User account"
+                onClick={() => {
+                  if (user) {
+                    return;
+                  } else {
+                    navigate(route.login);
+                  }
+                }}
+              >
+                <User className="w-5 h-5" />
+                {user ? (
+                  <span className="ml-2 text-sm font-medium">
+                    {user.username}
+                  </span>
+                ) : (
+                  <span className="ml-2 text-sm font-medium">Đăng Nhập</span>
                 )}
-              </motion.div>
-            </motion.form>
+              </motion.button>
+            </div>
           </div>
 
-          {/* Mobile Menu Button */}
-          <button
-            onClick={() => setOpen(true)}
-            className="lg:hidden p-2.5 rounded-lg bg-white/10 backdrop-blur-sm border border-[#d4af37]/30 text-[#f5e6d3] hover:bg-white/20 hover:border-[#d4af37]/60 transition-all duration-300"
-            aria-label="Open menu"
-          >
-            <Menu className="w-6 h-6" />
-          </button>
+          {/* Mobile Actions */}
+          <div className="flex lg:hidden items-center gap-3">
+            {/* Mobile Cart Icon */}
+            <motion.button
+              whileTap={{ scale: 0.9 }}
+              className="relative p-2.5 rounded-lg bg-white/10 backdrop-blur-sm border border-[#d4af37]/30 text-[#f5e6d3] hover:bg-white/20 hover:border-[#d4af37]/60 transition-all duration-300"
+              aria-label="Shopping cart"
+              onClick={() =>
+                user
+                  ? navigate(route.cart)
+                  : toast.error("Vui lòng đăng nhập để xem giỏ hàng")
+              }
+            >
+              <ShoppingCart className="w-5 h-5" />
+              <span className="absolute -top-1 -right-1 w-4 h-4 bg-[#d4af37] text-[#3d2817] text-[10px] font-bold rounded-full flex items-center justify-center">
+                {countCart}
+              </span>
+            </motion.button>
+
+            {/* Mobile Login Icon */}
+            <motion.button
+              whileTap={{ scale: 0.9 }}
+              className="p-2.5 rounded-lg bg-white/10 backdrop-blur-sm border border-[#d4af37]/30 text-[#f5e6d3] hover:bg-white/20 hover:border-[#d4af37]/60 transition-all duration-300"
+              aria-label="User account"
+            >
+              <User className="w-5 h-5" />
+            </motion.button>
+
+            {/* Mobile Menu Button */}
+            <button
+              onClick={() => setOpen(true)}
+              className="p-2.5 rounded-lg bg-white/10 backdrop-blur-sm border border-[#d4af37]/30 text-[#f5e6d3] hover:bg-white/20 hover:border-[#d4af37]/60 transition-all duration-300"
+              aria-label="Open menu"
+            >
+              <Menu className="w-6 h-6" />
+            </button>
+          </div>
         </div>
       </div>
 
@@ -194,16 +273,13 @@ const Header = ({ scrolled }) => {
                   }}
                   className="relative"
                 >
-                  <Search
-                    color="#d4af37"
-                    className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#d4af37] placeholder-[#d4af37]/60"
-                  />
+                  <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#d4af37]" />
                   <input
                     type="text"
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
                     placeholder="Tìm kiếm sản phẩm..."
-                    className="w-full pl-12 pr-4 py-3 rounded-lg bg-white  backdrop-blur-sm border border-[#d4af37]/30 text-[#3d2817] placeholder-[#5d4433]/60 focus:outline-none focus:ring-2 focus:ring-[#d4af37]/20 transition-all text-sm"
+                    className="w-full pl-12 pr-4 py-3 rounded-lg bg-white backdrop-blur-sm border border-[#d4af37]/30 text-[#3d2817] placeholder-[#5d4433]/60 focus:outline-none focus:ring-2 focus:ring-[#d4af37]/50 transition-all text-sm"
                   />
                 </form>
               </div>

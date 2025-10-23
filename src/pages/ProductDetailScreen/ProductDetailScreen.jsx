@@ -10,6 +10,9 @@ import {
 } from "lucide-react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
+import productService from "../../services/productService";
+import { useCartStore } from "../../stores/cartStore";
+import toast from "react-hot-toast";
 
 export default function ProductDetailScreen() {
   const { productId } = useParams();
@@ -17,16 +20,16 @@ export default function ProductDetailScreen() {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
+  const addItem = useCartStore((state) => state.addItem);
+  const items = useCartStore((state) => state.items);
+  console.log("Cart Items:", items);
   useEffect(() => {
     let mounted = true;
     setLoading(true);
 
     const fetchProduct = async () => {
       try {
-        const response = await axios.get(
-          `https://caprieux-be.onrender.com/api/products/${productId}`
-        );
+        const response = await productService.getProducts(productId);
         if (mounted) {
           setProduct(response.data);
           setError(null);
@@ -247,11 +250,14 @@ export default function ProductDetailScreen() {
                     boxShadow: "0 10px 40px rgba(212, 175, 55, 0.4)",
                   }}
                   whileTap={{ scale: 0.95 }}
-                  onClick={() => navigate(`/payment/${product._id}`)}
+                  onClick={() => {
+                    addItem(product);
+                    toast.success("Đã thêm vào giỏ hàng");
+                  }}
                   className="w-full py-5 rounded-full bg-linear-to-r from-[#d4af37] to-[#b8941f] text-white text-xl font-bold flex items-center justify-center gap-2 shadow-xl"
                 >
                   <ShoppingCart className="w-6 h-6" />
-                  Đặt Thuê Ngay
+                  Thêm Vào Giỏ Hàng
                 </motion.button>
               </div>
 

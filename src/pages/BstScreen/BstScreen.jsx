@@ -11,6 +11,7 @@ import {
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
+import productService from "../../services/productService";
 
 export default function BstScreen() {
   const [products, setProducts] = useState([]);
@@ -41,8 +42,7 @@ export default function BstScreen() {
     const fetchProducts = async () => {
       setLoading(true);
       try {
-        const url = "https://caprieux-be.onrender.com/api/products";
-        const response = await axios.get(url);
+        const response = await productService.getAllProducts();
         setProducts(response.data || []);
         setError(null);
       } catch (err) {
@@ -61,12 +61,16 @@ export default function BstScreen() {
       setLoading(true);
       setSearchError(null);
       try {
-        const url = searchQuery
-          ? `https://caprieux-be.onrender.com/api/products?searchTerm=${encodeURIComponent(
-              searchQuery
-            )}`
-          : "https://caprieux-be.onrender.com/api/products";
-        const resp = await axios.get(url);
+        // const url = searchQuery
+        //   ? `https://caprieux-be.onrender.com/api/products?searchTerm=${encodeURIComponent(
+        //       searchQuery
+        //     )}`
+        //   : "https://caprieux-be.onrender.com/api/products";
+
+        const resp = searchQuery
+          ? await productService.searchProducts(searchQuery)
+          : await productService.getAllProducts();
+        console.log("Search response:", resp);
         setProducts(resp.data || []);
       } catch (err) {
         setSearchError(err.message || "Search failed");

@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import paymentService from "../../services/paymentService";
 
 export default function OrderFailedScreen() {
   const navigate = useNavigate();
@@ -34,10 +34,7 @@ export default function OrderFailedScreen() {
         };
         console.log("Posting to webhook with data:", requestData);
 
-        const response = await axios.post(
-          "https://caprieux-be.onrender.com/api/payments/webhook",
-          requestData
-        );
+        const response = await paymentService.postWebhook(requestData);
         console.log("Webhook posted successfully:", response.data);
       } catch (error) {
         console.error("Error posting to webhook:", error);

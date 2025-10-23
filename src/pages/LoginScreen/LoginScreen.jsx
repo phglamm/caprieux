@@ -5,6 +5,8 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
+import authService from "../../services/authService";
+import { useUserStore } from "../../stores/userStore";
 
 export default function LoginScreen() {
   const navigate = useNavigate();
@@ -15,7 +17,7 @@ export default function LoginScreen() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-
+  const login = useUserStore((state) => state.login);
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -31,14 +33,12 @@ export default function LoginScreen() {
     setError("");
 
     try {
-      const response = await axios.post(
-        "https://caprieux-be.onrender.com/api/auth/login",
-        formData
-      );
+      const response = await authService.login(formData);
       console.log("Login successful:", response.data);
       Cookies.set("token", response.data.token, { expires: 1 });
       const user = jwtDecode(response.data.token);
       console.log("Decoded user:", user);
+      login(user);
       if (user.role === "admin") {
         navigate("/admin/products");
       } else {
@@ -142,13 +142,6 @@ export default function LoginScreen() {
           className="bg-white rounded-3xl shadow-2xl overflow-hidden border border-[#d4b896]/30"
         >
           <div className="bg-gradient-to-r from-[#3d2817] via-[#5d4433] to-[#3d2817] p-8 text-center">
-            <motion.div
-              animate={{ rotate: 360 }}
-              transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-              className="inline-block mb-4"
-            >
-              <Lock className="w-12 h-12 text-[#d4af37]" />
-            </motion.div>
             <h2 className="text-2xl font-bold text-[#f5e6d3]">Đăng Nhập</h2>
             <p className="text-[#f5e6d3]/80 mt-2">
               Truy cập vào tài khoản của bạn

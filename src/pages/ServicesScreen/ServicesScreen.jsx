@@ -20,6 +20,7 @@ import {
   Phone,
   Mail,
 } from "lucide-react";
+import toast from "react-hot-toast";
 
 export default function ServicesScreen() {
   const [membershipForm, setMembershipForm] = useState({
@@ -151,7 +152,7 @@ export default function ServicesScreen() {
 
   const handleMembershipSubmit = (e) => {
     e.preventDefault();
-    alert("Đăng ký thành công! Chúng tôi sẽ liên hệ bạn sớm.");
+    toast.success("Đăng ký thành công! Chúng tôi sẽ liên hệ bạn sớm.");
     setMembershipForm({ name: "", email: "", phone: "", plan: "basic" });
   };
 

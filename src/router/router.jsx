@@ -15,6 +15,7 @@ import AboutUsScreen from "../pages/AboutUsScreen/AboutUsScreen";
 import AdminOrderScreen from "../pages/AdminOrderScreen/AdminOrderScreen";
 import AdminProducts from "../pages/AdminProducts/AdminProducts";
 import LoginScreen from "../pages/LoginScreen/LoginScreen";
+import CartScreen from "../pages/CartScreen/CartScreen";
 
 export const router = createBrowserRouter([
   {
@@ -57,12 +58,17 @@ export const router = createBrowserRouter([
         path: route.service,
         element: <ServicesScreen />,
       },
+      {
+        path: route.cart,
+        element: <CartScreen />,
+      },
+      {
+        path: route.login,
+        element: <LoginScreen />,
+      },
     ],
   },
-  {
-    path: route.login,
-    element: <LoginScreen />,
-  },
+
   {
     path: route.admin,
     element: <AdminLayout />,

@@ -24,9 +24,13 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
+import productService from "../../services/productService";
+import { useCartStore } from "../../stores/cartStore";
 const HomeScreen = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const navigate = useNavigate();
+  const items = useCartStore((state) => state.items);
+  console.log("Cart Items:", items);
 
   const testimonials = [
     {
@@ -72,26 +76,22 @@ const HomeScreen = () => {
   };
 
   useEffect(() => {
-    let mounted = true;
     const fetchNew = async () => {
       setNewLoading(true);
       setNewError(null);
       try {
-        const resp = await axios.get(
-          "https://caprieux-be.onrender.com/api/products?limit=8"
-        );
-        if (mounted) setNewProducts(resp.data || []);
+        const resp = await productService.getAllProducts({
+          limit: 8,
+        });
+        setNewProducts(resp.data || []);
       } catch (err) {
-        if (mounted) setNewError(err.message || "Failed to load new products");
+        setNewError(err.message || "Failed to load new products");
       } finally {
-        if (mounted) setNewLoading(false);
+        setNewLoading(false);
       }
     };
 
     fetchNew();
-    return () => {
-      mounted = false;
-    };
   }, []);
 
   // Handle responsive items per view

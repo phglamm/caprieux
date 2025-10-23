@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { Edit, Trash2, Save, X, Package } from "lucide-react";
-
-const API_BASE = "https://caprieux-be.onrender.com";
+import productService from "./../../services/productService";
 
 export default function AdminProducts() {
   const [products, setProducts] = useState([]);
@@ -31,7 +29,7 @@ export default function AdminProducts() {
     setLoading(true);
     setError(null);
     try {
-      const resp = await axios.get(`${API_BASE}/api/products`);
+      const resp = await productService.getAllProducts();
       setProducts(resp.data || []);
     } catch (err) {
       setError(err.message || "Lỗi khi tải sản phẩm");
@@ -52,7 +50,7 @@ export default function AdminProducts() {
   const confirmDelete = async () => {
     if (!selectedProduct) return;
     try {
-      await axios.delete(`${API_BASE}/api/products/${selectedProduct._id}`);
+      await productService.deleteProduct(selectedProduct._id);
       setProducts((p) => p.filter((x) => x._id !== selectedProduct._id));
       setShowDeleteModal(false);
       setSelectedProduct(null);
@@ -146,10 +144,7 @@ export default function AdminProducts() {
         },
       };
 
-      await axios.put(
-        `${API_BASE}/api/products/${selectedProduct._id}`,
-        payload
-      );
+      await productService.updateProduct(selectedProduct._id, payload);
 
       setProducts((list) =>
         list.map((p) =>
@@ -192,7 +187,7 @@ export default function AdminProducts() {
         },
       };
 
-      const resp = await axios.post(`${API_BASE}/api/products`, payload);
+      const resp = await productService.createProduct(payload);
       const created = resp.data;
       setProducts((list) => [created, ...list]);
       cancelEdit();

@@ -7,7 +7,7 @@ export const route = {
   policy: "/policy",
   bst: "/bst",
   productDetail: "/product/:productId",
-  payment: "/payment/:productId",
+  payment: "/payment",
   orderSuccess: "/order-success",
   orderFailed: "/order-failed",
   service: "/service",
@@ -17,4 +17,5 @@ export const route = {
   adminOrders: "/admin/orders",
   adminUsers: "/admin/users",
   adminSettings: "/admin/settings",
+  cart: "/cart",
 };

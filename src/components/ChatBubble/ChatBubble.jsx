@@ -10,6 +10,7 @@ import {
   Bot,
   User,
 } from "lucide-react";
+import chatService from "../../services/chatService";
 
 export default function ChatBubble() {
   const [isOpen, setIsOpen] = useState(false);
@@ -68,11 +69,10 @@ export default function ChatBubble() {
     }));
 
     try {
-      const response = await axios.post(API_URL, {
+      const response = await chatService.sendMessage({
         message: userMsg.text,
         conversationHistory: conversationHistory,
       });
-
       const data = response.data;
 
       // Extract assistant reply from response

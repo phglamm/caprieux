@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Eye, Package, X } from "lucide-react";
-
-const API_BASE = "https://caprieux-be.onrender.com";
+import orderService from "../../services/orderService";
 
 export default function AdminOrderScreen() {
   const [orders, setOrders] = useState([]);
@@ -15,7 +14,8 @@ export default function AdminOrderScreen() {
     setLoading(true);
     setError(null);
     try {
-      const resp = await axios.get(`${API_BASE}/api/orders`);
+      const resp = await orderService.getOrders();
+      console.log("Fetched orders:", resp);
       setOrders(resp.data || []);
     } catch (err) {
       setError(err.message || "Lỗi khi tải đơn hàng");
