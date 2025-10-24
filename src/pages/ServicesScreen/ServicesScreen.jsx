@@ -342,7 +342,50 @@ export default function ServicesScreen() {
               </motion.div>
             ))}
           </motion.div>
+          <section className="w-full bg-[#f5e6d3] py-20 lg:py-28 px-6 lg:px-12">
+            <div className="max-w-7xl mx-auto">
+              <motion.h2
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8 }}
+                className="text-4xl lg:text-5xl text-center mb-16 text-[#3d2817] font-bold"
+              >
+                Đặc Quyền Thành Viên
+              </motion.h2>
 
+              <motion.div
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                variants={containerVariants}
+                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+              >
+                {membershipBenefits.map((benefit, idx) => (
+                  <motion.div
+                    key={idx}
+                    variants={scaleVariants}
+                    whileHover={{ scale: 1.05, y: -10 }}
+                    className="bg-white rounded-3xl p-8 text-center shadow-xl group"
+                  >
+                    <motion.div
+                      whileHover={{ rotate: 360 }}
+                      transition={{ duration: 0.6 }}
+                      className={` text-[#d4af37] w-20 h-20 rounded-2xl flex items-center justify-center mb-6 mx-auto`}
+                    >
+                      {benefit.icon}
+                    </motion.div>
+                    <h3 className="text-2xl font-bold text-[#3d2817] mb-4 group-hover:text-[#d4af37] transition-colors">
+                      {benefit.title}
+                    </h3>
+                    <p className="text-[#5d4433] leading-relaxed">
+                      {benefit.desc}
+                    </p>
+                  </motion.div>
+                ))}
+              </motion.div>
+            </div>
+          </section>
           {/* Membership Registration Form */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -444,48 +487,6 @@ export default function ServicesScreen() {
       </section>
 
       {/* Benefits of Membership */}
-      <section className="w-full bg-[#f5e6d3] py-20 lg:py-28 px-6 lg:px-12">
-        <div className="max-w-7xl mx-auto">
-          <motion.h2
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="text-4xl lg:text-5xl text-center mb-16 text-[#3d2817] font-bold"
-          >
-            Đặc Quyền Thành Viên
-          </motion.h2>
-
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={containerVariants}
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-          >
-            {membershipBenefits.map((benefit, idx) => (
-              <motion.div
-                key={idx}
-                variants={scaleVariants}
-                whileHover={{ scale: 1.05, y: -10 }}
-                className="bg-white rounded-3xl p-8 text-center shadow-xl group"
-              >
-                <motion.div
-                  whileHover={{ rotate: 360 }}
-                  transition={{ duration: 0.6 }}
-                  className={` text-[#d4af37] w-20 h-20 rounded-2xl flex items-center justify-center mb-6 mx-auto`}
-                >
-                  {benefit.icon}
-                </motion.div>
-                <h3 className="text-2xl font-bold text-[#3d2817] mb-4 group-hover:text-[#d4af37] transition-colors">
-                  {benefit.title}
-                </h3>
-                <p className="text-[#5d4433] leading-relaxed">{benefit.desc}</p>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
 
       {/* CTA Section */}
       <section className="w-full bg-linear-to-br from-[#3d2817] via-[#5d4433] to-[#3d2817] py-20 lg:py-28 px-6 lg:px-12 text-center text-white">
