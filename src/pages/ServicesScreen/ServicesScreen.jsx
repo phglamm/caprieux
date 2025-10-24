@@ -279,7 +279,7 @@ export default function ServicesScreen() {
             transition={{ duration: 0.8 }}
             className="text-4xl lg:text-5xl  text-[#3d2817] text-center mb-6 font-bold"
           >
-            Gói Membership
+            Gói Thành Viên
           </motion.h2>
           <motion.p
             initial={{ opacity: 0 }}
